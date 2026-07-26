@@ -1,0 +1,53 @@
+---
+import type { ProjectEntry } from "../lib/projects";
+
+interface Props {
+	icon: ProjectEntry["data"]["capabilities"][number]["icon"];
+}
+
+const { icon } = Astro.props;
+---
+
+{
+	icon === "search" && (
+		<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+			<circle cx="10.75" cy="10.75" r="6.75" />
+			<path d="m16 16 4 4" />
+		</svg>
+	)
+}
+{
+	icon === "check" && (
+		<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+			<circle cx="12" cy="12" r="8.5" />
+			<path d="m8.25 12.2 2.45 2.45 5.2-5.3" />
+		</svg>
+	)
+}
+{
+	icon === "bookmark" && (
+		<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+			<path d="M6.5 4.25h11v15.5L12 16.4l-5.5 3.35V4.25Z" />
+		</svg>
+	)
+}
+{
+	icon === "unlock" && (
+		<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+			<rect x="5.25" y="10.25" width="13.5" height="9.25" rx="1.5" />
+			<path d="M8.5 10.25v-2a3.5 3.5 0 0 1 6.8-1.15" />
+		</svg>
+	)
+}
+
+<style>
+	svg {
+		width: 1.125rem;
+		height: 1.125rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		stroke-width: 1.7;
+	}
+</style>

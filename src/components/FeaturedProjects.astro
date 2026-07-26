@@ -1,6 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import type { ProjectEntry } from "../lib/projects";
+import {
+	getProjectPrimaryHref,
+	hasCaseStudy,
+	type ProjectEntry,
+} from "../lib/projects";
 
 interface Props {
 	projects: ProjectEntry[];
@@ -15,15 +19,19 @@ const { projects } = Astro.props;
 			projects.map((project, index) => {
 				const { data } = project;
 				const sequence = String(index + 1).padStart(2, "0");
+				const primaryHref = getProjectPrimaryHref(project);
+				const caseStudy = hasCaseStudy(project);
 
 				return (
 					<article class="featured-project">
 						<a
 							class="featured-project__media"
-							href={data.liveUrl}
-							target="_blank"
-							rel="noreferrer"
-							aria-label={`Visit ${data.title}`}
+							href={primaryHref}
+							target={caseStudy ? undefined : "_blank"}
+							rel={caseStudy ? undefined : "noreferrer"}
+							aria-label={
+								caseStudy ? `View ${data.title} project` : `Visit ${data.title}`
+							}
 						>
 							<Image
 								src={data.hero.src}
@@ -64,7 +72,11 @@ const { projects } = Astro.props;
 								>
 									Visit {data.title} <span aria-hidden="true">↗</span>
 								</a>
-								{
+								{caseStudy ? (
+									<a class="featured-project__button" href={primaryHref}>
+										View project <span aria-hidden="true">→</span>
+									</a>
+								) : (
 									data.devlogUrl && (
 										<a
 											class="featured-project__button"
@@ -75,7 +87,7 @@ const { projects } = Astro.props;
 											Project notes
 										</a>
 									)
-								}
+								)}
 							</div>
 						</div>
 					</article>

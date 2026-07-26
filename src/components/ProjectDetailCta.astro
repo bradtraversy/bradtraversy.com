@@ -1,0 +1,131 @@
+---
+import type { CaseStudyProjectEntry } from "../lib/projects";
+
+interface Props {
+	project: CaseStudyProjectEntry;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const { cta } = data.caseStudy;
+---
+
+<section class="project-detail-cta shell" aria-labelledby="project-cta-title">
+	<div>
+		<p class="project-detail-cta__eyebrow">{cta.eyebrow}</p>
+		<h2 id="project-cta-title">{cta.heading} <em>{cta.accent}</em></h2>
+		<p class="project-detail-cta__description">{cta.description}</p>
+	</div>
+
+	<div class="project-detail-cta__actions">
+		<a
+			class="project-detail-cta__button project-detail-cta__button--primary"
+			href={data.liveUrl}
+			target="_blank"
+			rel="noreferrer"
+		>
+			Open {data.title} <span aria-hidden="true">↗</span>
+		</a>
+		{
+			data.devlogUrl && (
+				<a
+					class="project-detail-cta__button"
+					href={data.devlogUrl}
+					target="_blank"
+					rel="noreferrer"
+				>
+					Read build notes <span aria-hidden="true">→</span>
+				</a>
+			)
+		}
+	</div>
+</section>
+
+<style>
+	.project-detail-cta {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: end;
+		gap: 4rem;
+		padding-block: 6.5rem;
+		border-top: 1px solid var(--color-line);
+	}
+
+	.project-detail-cta__eyebrow {
+		margin: 0 0 1.5rem;
+		color: var(--color-gold);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	h2 {
+		max-width: 50.625rem;
+		margin: 0 0 1.125rem;
+		font-size: clamp(3rem, 6.5vw, 5.5rem);
+		font-weight: 500;
+		letter-spacing: -0.06em;
+		line-height: 0.98;
+	}
+
+	h2 em {
+		color: var(--color-gold-soft);
+		font-style: normal;
+		font-weight: inherit;
+	}
+
+	.project-detail-cta__description {
+		max-width: 38.75rem;
+		margin: 0;
+		color: var(--color-muted);
+	}
+
+	.project-detail-cta__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.project-detail-cta__button {
+		display: inline-flex;
+		min-height: 3rem;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5625rem;
+		padding-inline: 1.25rem;
+		border: 1px solid var(--color-line);
+		font-size: 0.8125rem;
+		font-weight: 700;
+		text-decoration: none;
+		transition:
+			background 180ms ease,
+			border-color 180ms ease,
+			color 180ms ease;
+	}
+
+	.project-detail-cta__button--primary {
+		border-color: var(--color-gold);
+		background: var(--color-gold);
+		color: var(--color-black);
+	}
+
+	.project-detail-cta__button--primary:hover,
+	.project-detail-cta__button--primary:focus-visible {
+		border-color: var(--color-gold-soft);
+		background: var(--color-gold-soft);
+	}
+
+	.project-detail-cta__button:not(.project-detail-cta__button--primary):hover,
+	.project-detail-cta__button:not(.project-detail-cta__button--primary):focus-visible {
+		border-color: var(--color-bone);
+	}
+
+	@media (max-width: 47.5rem) {
+		.project-detail-cta {
+			grid-template-columns: 1fr;
+			gap: 2.375rem;
+			padding-block: 5.125rem;
+		}
+	}
+</style>

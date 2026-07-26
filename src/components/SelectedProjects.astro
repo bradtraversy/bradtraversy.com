@@ -1,6 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import { getProjectCatalog } from "../lib/projects";
+import {
+	getProjectCatalog,
+	getProjectPrimaryHref,
+	hasCaseStudy,
+} from "../lib/projects";
 
 const { projects } = await getProjectCatalog();
 ---
@@ -20,32 +24,42 @@ const { projects } = await getProjectCatalog();
 
 		<div class="projects__gallery">
 			{
-				projects.map(({ data }) => (
-					<a
-						class="project"
-						href={data.liveUrl}
-						target="_blank"
-						rel="noreferrer"
-						aria-label={`Visit ${data.title}: ${data.summary}`}
-					>
-						<div class="project__media">
-							<Image
-								src={data.hero.src}
-								alt={data.hero.alt}
-								widths={[480, 720, 960]}
-								sizes="(max-width: 640px) calc(100vw - 3rem), (max-width: 1440px) calc((100vw - 8rem) / 2), 39rem"
-							/>
-						</div>
-						<div class="project__copy">
-							<div>
-								<span class="project__type">{data.type}</span>
-								<h3>{data.title}</h3>
+				projects.map((project) => {
+					const { data } = project;
+					const primaryHref = getProjectPrimaryHref(project);
+					const caseStudy = hasCaseStudy(project);
+
+					return (
+						<a
+							class="project"
+							href={primaryHref}
+							target={caseStudy ? undefined : "_blank"}
+							rel={caseStudy ? undefined : "noreferrer"}
+							aria-label={
+								caseStudy
+									? `View ${data.title} project: ${data.summary}`
+									: `Visit ${data.title}: ${data.summary}`
+							}
+						>
+							<div class="project__media">
+								<Image
+									src={data.hero.src}
+									alt={data.hero.alt}
+									widths={[480, 720, 960]}
+									sizes="(max-width: 640px) calc(100vw - 3rem), (max-width: 1440px) calc((100vw - 8rem) / 2), 39rem"
+								/>
 							</div>
-							<span class="project__arrow" aria-hidden="true">↗</span>
-							<p>{data.summary}</p>
-						</div>
-					</a>
-				))
+							<div class="project__copy">
+								<div>
+									<span class="project__type">{data.type}</span>
+									<h3>{data.title}</h3>
+								</div>
+								<span class="project__arrow" aria-hidden="true">{caseStudy ? "→" : "↗"}</span>
+								<p>{data.summary}</p>
+							</div>
+						</a>
+					);
+				})
 			}
 		</div>
 	</div>

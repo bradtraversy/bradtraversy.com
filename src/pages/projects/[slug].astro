@@ -1,0 +1,43 @@
+---
+import { render } from "astro:content";
+import ProjectDetailBuild from "../../components/ProjectDetailBuild.astro";
+import ProjectDetailCta from "../../components/ProjectDetailCta.astro";
+import ProjectDetailGallery from "../../components/ProjectDetailGallery.astro";
+import ProjectDetailHero from "../../components/ProjectDetailHero.astro";
+import ProjectDetailStory from "../../components/ProjectDetailStory.astro";
+import { SITE_CONFIG } from "../../data/site";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+	getCaseStudyProjects,
+	type CaseStudyProjectEntry,
+} from "../../lib/projects";
+
+export async function getStaticPaths() {
+	const projects = await getCaseStudyProjects();
+
+	return projects.map((project) => ({
+		params: { slug: project.id },
+		props: { project },
+	}));
+}
+
+interface Props {
+	project: CaseStudyProjectEntry;
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const title = `${project.data.title} | ${SITE_CONFIG.name}`;
+---
+
+<BaseLayout title={title} description={project.data.caseStudy.description}>
+	<main>
+		<ProjectDetailHero project={project} />
+		<ProjectDetailStory project={project}>
+			<Content />
+		</ProjectDetailStory>
+		<ProjectDetailGallery project={project} />
+		<ProjectDetailBuild project={project} />
+		<ProjectDetailCta project={project} />
+	</main>
+</BaseLayout>

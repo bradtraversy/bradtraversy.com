@@ -2,6 +2,11 @@ import { getCollection, type CollectionEntry } from "astro:content";
 
 export type ProjectEntry = CollectionEntry<"projects">;
 export type ProjectIconName = ProjectEntry["data"]["icon"];
+export type CaseStudyProjectEntry = ProjectEntry & {
+	data: ProjectEntry["data"] & {
+		caseStudy: NonNullable<ProjectEntry["data"]["caseStudy"]>;
+	};
+};
 
 export interface ProjectCatalog {
 	projects: ProjectEntry[];
@@ -46,4 +51,45 @@ export async function getProjectCatalog(): Promise<ProjectCatalog> {
 		featured,
 		additional,
 	};
+}
+
+export function hasCaseStudy(
+	project: ProjectEntry,
+): project is CaseStudyProjectEntry {
+	return project.data.caseStudy !== undefined;
+}
+
+export function getProjectPrimaryHref(project: ProjectEntry): string {
+	return hasCaseStudy(project)
+		? `/projects/${project.id}`
+		: project.data.liveUrl;
+}
+
+export async function getCaseStudyProjects(): Promise<
+	CaseStudyProjectEntry[]
+> {
+	const { projects } = await getProjectCatalog();
+	const caseStudies = projects.filter(hasCaseStudy);
+
+	for (const project of caseStudies) {
+		if (!project.body?.trim()) {
+			throw new Error(
+				`Project case study "${project.id}" requires a non-empty Markdown body.`,
+			);
+		}
+
+		if (project.data.capabilities.length === 0) {
+			throw new Error(
+				`Project case study "${project.id}" requires at least one capability.`,
+			);
+		}
+
+		if (project.data.gallery.length === 0) {
+			throw new Error(
+				`Project case study "${project.id}" requires at least one gallery image.`,
+			);
+		}
+	}
+
+	return caseStudies;
 }

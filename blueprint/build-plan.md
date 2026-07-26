@@ -14,7 +14,7 @@
   social links, contact, and the bradtraversy.dev devlog path
 - [x] 3. **Project collection and index** - define validated project content,
   seed the curated catalog, and build the featured and additional-project listing
-- [ ] 4. **Project detail pages** - generate project case-study routes with
+- [x] 4. **Project detail pages** - generate project case-study routes with
   narrative sections, role and stack facts, capabilities, media galleries,
   product links, and related build notes
 - [ ] 5. **Writing collection and index** - define internal and external writing

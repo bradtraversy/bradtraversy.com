@@ -1,0 +1,146 @@
+---
+import type { CaseStudyProjectEntry } from "../lib/projects";
+import ProjectDetailSectionHeader from "./ProjectDetailSectionHeader.astro";
+
+interface Props {
+	project: CaseStudyProjectEntry;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const { build } = data.caseStudy;
+---
+
+<section
+	class="project-detail-build shell"
+	aria-labelledby="project-build-title"
+>
+	<ProjectDetailSectionHeader section={build} titleId="project-build-title">
+		<p>{build.description}</p>
+	</ProjectDetailSectionHeader>
+
+	<div class="project-detail-build__layout">
+		<div>
+			<p class="project-detail-build__label">{build.stackLabel}</p>
+			<ul
+				class="project-detail-build__stack"
+				aria-label={`${data.title} technology stack`}
+			>
+				{build.stack.map((technology) => <li>{technology}</li>)}
+			</ul>
+		</div>
+
+		<div>
+			<p class="project-detail-build__label">{build.workflowLabel}</p>
+			<ol class="project-detail-build__workflow">
+				{
+					build.workflow.map((step) => (
+						<li>
+							<span class="project-detail-build__number">{step.label}</span>
+							<code>{step.command}</code>
+							<p>{step.description}</p>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+	</div>
+</section>
+
+<style>
+	.project-detail-build {
+		padding-block: 7rem;
+		border-top: 1px solid var(--color-line);
+	}
+
+	.project-detail-build__label {
+		margin: 0 0 1.5rem;
+		color: var(--color-gold);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	.project-detail-build__layout {
+		display: grid;
+		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+		align-items: start;
+		gap: 5.25rem;
+	}
+
+	.project-detail-build__stack {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.project-detail-build__stack li {
+		padding: 0.5rem 0.6875rem;
+		border: 1px solid var(--color-line);
+		color: var(--color-muted);
+		font-size: 0.6875rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	.project-detail-build__workflow {
+		margin: 0;
+		padding: 0;
+		border-top: 1px solid var(--color-line);
+		list-style: none;
+	}
+
+	.project-detail-build__workflow li {
+		display: grid;
+		grid-template-columns: 3rem minmax(0, 0.65fr) minmax(0, 1fr);
+		align-items: baseline;
+		gap: 1.375rem;
+		padding-block: 1.25rem;
+		border-bottom: 1px solid var(--color-line);
+	}
+
+	.project-detail-build__number {
+		color: var(--color-gold);
+		font-size: 0.625rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+	}
+
+	code {
+		color: var(--color-bone);
+		font-family: var(--font-sans);
+		font-size: 0.875rem;
+		font-weight: 600;
+	}
+
+	.project-detail-build__workflow p {
+		margin: 0;
+		color: var(--color-muted);
+		font-size: 0.8125rem;
+	}
+
+	@media (max-width: 65.625rem) {
+		.project-detail-build__layout {
+			grid-template-columns: 1fr;
+			gap: 2.375rem;
+		}
+	}
+
+	@media (max-width: 47.5rem) {
+		.project-detail-build {
+			padding-block: 5.125rem;
+		}
+
+		.project-detail-build__workflow li {
+			grid-template-columns: 2.125rem 1fr;
+		}
+
+		.project-detail-build__workflow p {
+			grid-column: 2;
+		}
+	}
+</style>

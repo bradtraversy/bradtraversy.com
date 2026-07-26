@@ -1,6 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import type { ProjectEntry } from "../lib/projects";
+import {
+	getProjectPrimaryHref,
+	hasCaseStudy,
+	type ProjectEntry,
+} from "../lib/projects";
 import ProjectIcon from "./ProjectIcon.astro";
 
 interface Props {
@@ -25,53 +29,65 @@ const { projects } = Astro.props;
 
 		<div class="project-catalog__grid">
 			{
-				projects.map(({ data }) => (
-					<article class="project-card">
-						<a
-							class="project-card__media"
-							href={data.liveUrl}
-							target="_blank"
-							rel="noreferrer"
-							aria-label={`Visit ${data.title}`}
-						>
-							<Image
-								src={data.hero.src}
-								alt={data.hero.alt}
-								widths={[480, 720, 960]}
-								sizes="(max-width: 900px) calc(100vw - 3rem), 48vw"
-							/>
-						</a>
+				projects.map((project) => {
+					const { data } = project;
+					const primaryHref = getProjectPrimaryHref(project);
+					const caseStudy = hasCaseStudy(project);
 
-						<div class="project-card__heading">
-							<div class="project-card__title">
-								<span class="project-card__icon">
-									<ProjectIcon icon={data.icon} />
-								</span>
-								<h3>{data.title}</h3>
-							</div>
-							<span class="project-card__status">{data.status}</span>
-						</div>
-
-						<p class="project-card__copy">{data.summary}</p>
-
-						<ul class="project-card__stack" aria-label={`${data.title} technology stack`}>
-							{data.stack.map((technology) => <li>{technology}</li>)}
-						</ul>
-
-						<div class="project-card__links">
-							<a href={data.liveUrl} target="_blank" rel="noreferrer">
-								Visit site <span aria-hidden="true">↗</span>
+					return (
+						<article class="project-card">
+							<a
+								class="project-card__media"
+								href={primaryHref}
+								target={caseStudy ? undefined : "_blank"}
+								rel={caseStudy ? undefined : "noreferrer"}
+								aria-label={
+									caseStudy ? `View ${data.title} project` : `Visit ${data.title}`
+								}
+							>
+								<Image
+									src={data.hero.src}
+									alt={data.hero.alt}
+									widths={[480, 720, 960]}
+									sizes="(max-width: 900px) calc(100vw - 3rem), 48vw"
+								/>
 							</a>
-							{
-								data.devlogUrl && (
-									<a href={data.devlogUrl} target="_blank" rel="noreferrer">
-										Build notes <span aria-hidden="true">→</span>
+
+							<div class="project-card__heading">
+								<div class="project-card__title">
+									<span class="project-card__icon">
+										<ProjectIcon icon={data.icon} />
+									</span>
+									<h3>{data.title}</h3>
+								</div>
+								<span class="project-card__status">{data.status}</span>
+							</div>
+
+							<p class="project-card__copy">{data.summary}</p>
+
+							<ul class="project-card__stack" aria-label={`${data.title} technology stack`}>
+								{data.stack.map((technology) => <li>{technology}</li>)}
+							</ul>
+
+							<div class="project-card__links">
+								<a href={data.liveUrl} target="_blank" rel="noreferrer">
+									Visit site <span aria-hidden="true">↗</span>
+								</a>
+								{caseStudy ? (
+									<a href={primaryHref}>
+										View project <span aria-hidden="true">→</span>
 									</a>
-								)
-							}
-						</div>
-					</article>
-				))
+								) : (
+									data.devlogUrl && (
+										<a href={data.devlogUrl} target="_blank" rel="noreferrer">
+											Build notes <span aria-hidden="true">→</span>
+										</a>
+									)
+								)}
+							</div>
+						</article>
+					);
+				})
 			}
 		</div>
 	</div>

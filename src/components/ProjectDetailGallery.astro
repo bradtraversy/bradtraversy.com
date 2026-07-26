@@ -1,0 +1,143 @@
+---
+import { Image } from "astro:assets";
+import type { CaseStudyProjectEntry } from "../lib/projects";
+import ProjectDetailSectionHeader from "./ProjectDetailSectionHeader.astro";
+
+interface Props {
+	project: CaseStudyProjectEntry;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const { product } = data.caseStudy;
+const leadImage = data.gallery[0];
+const supportingImages = data.gallery.slice(1);
+
+if (!leadImage) {
+	throw new Error(`Project case study "${project.id}" requires a gallery image.`);
+}
+---
+
+<section
+	class="project-detail-gallery shell"
+	aria-labelledby="project-product-title"
+>
+	<ProjectDetailSectionHeader section={product} titleId="project-product-title">
+		<p>{product.description}</p>
+	</ProjectDetailSectionHeader>
+
+	<div class="project-detail-gallery__grid">
+		<figure class="project-detail-gallery__item project-detail-gallery__item--lead">
+			<div class="project-detail-gallery__frame">
+				<Image
+					src={leadImage.src}
+					alt={leadImage.alt}
+					widths={[640, 960, 1280]}
+					sizes="(max-width: 760px) calc(100vw - 3rem), 61vw"
+				/>
+			</div>
+			{
+				(leadImage.title || leadImage.caption) && (
+					<figcaption>
+						{leadImage.title && <strong>{leadImage.title}</strong>}
+						{leadImage.caption && <span>{leadImage.caption}</span>}
+					</figcaption>
+				)
+			}
+		</figure>
+
+		<div class="project-detail-gallery__column">
+			{
+				supportingImages.map((image) => (
+					<figure class="project-detail-gallery__item">
+						<div class="project-detail-gallery__frame">
+							<Image
+								src={image.src}
+								alt={image.alt}
+								widths={[480, 720, 960]}
+								sizes="(max-width: 760px) calc(100vw - 3rem), 36vw"
+							/>
+						</div>
+						{(image.title || image.caption) && (
+							<figcaption>
+								{image.title && <strong>{image.title}</strong>}
+								{image.caption && <span>{image.caption}</span>}
+							</figcaption>
+						)}
+					</figure>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	.project-detail-gallery {
+		padding-block: 7rem;
+		border-top: 1px solid var(--color-line);
+	}
+
+	.project-detail-gallery__grid {
+		display: grid;
+		grid-template-columns: 1.25fr 0.75fr;
+		gap: 1.75rem;
+	}
+
+	.project-detail-gallery__column {
+		display: grid;
+		align-content: start;
+		gap: 1.75rem;
+	}
+
+	.project-detail-gallery__item {
+		min-width: 0;
+		margin: 0;
+	}
+
+	.project-detail-gallery__frame {
+		overflow: hidden;
+		aspect-ratio: 16 / 9.7;
+		border: 1px solid rgba(244, 239, 227, 0.25);
+		background: #f3f0e8;
+	}
+
+	.project-detail-gallery__item--lead .project-detail-gallery__frame {
+		aspect-ratio: 16 / 12;
+	}
+
+	.project-detail-gallery__frame :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center top;
+	}
+
+	figcaption {
+		display: flex;
+		justify-content: space-between;
+		gap: 1.125rem;
+		padding-top: 0.8125rem;
+		color: var(--color-muted);
+		font-size: 0.75rem;
+	}
+
+	figcaption strong {
+		color: var(--color-bone);
+		font-weight: 600;
+	}
+
+	@media (max-width: 47.5rem) {
+		.project-detail-gallery {
+			padding-block: 5.125rem;
+		}
+
+		.project-detail-gallery__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.project-detail-gallery__item--lead .project-detail-gallery__frame,
+		.project-detail-gallery__frame {
+			aspect-ratio: 16 / 10;
+		}
+	}
+</style>

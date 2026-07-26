@@ -1,0 +1,85 @@
+---
+interface ProjectSection {
+	eyebrow: string;
+	heading: string;
+	accent: string;
+}
+
+interface Props {
+	section: ProjectSection;
+	titleId: string;
+}
+
+const { section, titleId } = Astro.props;
+---
+
+<div class="project-detail-section-header">
+	<div>
+		<p class="project-detail-section-header__eyebrow">{section.eyebrow}</p>
+		<h2 id={titleId}>{section.heading} <em>{section.accent}</em></h2>
+	</div>
+
+	<div class="project-detail-section-header__prose">
+		<slot />
+	</div>
+</div>
+
+<style>
+	.project-detail-section-header {
+		display: grid;
+		grid-template-columns: minmax(16.25rem, 0.58fr) minmax(0, 1fr);
+		gap: 5.5rem;
+		margin-bottom: 4.25rem;
+	}
+
+	.project-detail-section-header__eyebrow {
+		margin: 0 0 1.5rem;
+		color: var(--color-gold);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	h2 {
+		max-width: 41.25rem;
+		margin: 0;
+		font-size: clamp(2.75rem, 5.6vw, 4.625rem);
+		font-weight: 500;
+		letter-spacing: -0.055em;
+		line-height: 1;
+	}
+
+	h2 em {
+		color: var(--color-gold-soft);
+		font-style: normal;
+		font-weight: inherit;
+	}
+
+	.project-detail-section-header__prose {
+		max-width: 42.5rem;
+	}
+
+	.project-detail-section-header__prose :global(p) {
+		margin: 0 0 1.375rem;
+		color: var(--color-muted);
+		font-size: 1.0625rem;
+	}
+
+	.project-detail-section-header__prose :global(p:last-child) {
+		margin-bottom: 0;
+	}
+
+	@media (max-width: 65.625rem) {
+		.project-detail-section-header {
+			grid-template-columns: 1fr;
+			gap: 2.375rem;
+		}
+	}
+
+	@media (max-width: 47.5rem) {
+		.project-detail-section-header {
+			margin-bottom: 3rem;
+		}
+	}
+</style>

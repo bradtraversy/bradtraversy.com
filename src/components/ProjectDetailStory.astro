@@ -1,0 +1,100 @@
+---
+import type { CaseStudyProjectEntry } from "../lib/projects";
+import ProjectCapabilityIcon from "./ProjectCapabilityIcon.astro";
+import ProjectDetailSectionHeader from "./ProjectDetailSectionHeader.astro";
+
+interface Props {
+	project: CaseStudyProjectEntry;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const { story } = data.caseStudy;
+---
+
+<section
+	class="project-detail-story shell"
+	id="story"
+	aria-labelledby="project-story-title"
+>
+	<ProjectDetailSectionHeader section={story} titleId="project-story-title">
+		<slot />
+	</ProjectDetailSectionHeader>
+
+	<div
+		class="project-detail-story__capabilities"
+		aria-label={`${data.title} capabilities`}
+	>
+		{
+			data.capabilities.map((capability) => (
+				<article class="project-detail-story__capability">
+					<span class="project-detail-story__icon" aria-hidden="true">
+						<ProjectCapabilityIcon icon={capability.icon} />
+					</span>
+					<h3>{capability.title}</h3>
+					<p>{capability.description}</p>
+				</article>
+			))
+		}
+	</div>
+</section>
+
+<style>
+	.project-detail-story {
+		padding-block: 7rem;
+		border-top: 1px solid var(--color-line);
+	}
+
+	.project-detail-story__capabilities {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		border-top: 1px solid var(--color-line);
+		border-left: 1px solid var(--color-line);
+	}
+
+	.project-detail-story__capability {
+		min-height: 14.375rem;
+		padding: 1.75rem;
+		border-right: 1px solid var(--color-line);
+		border-bottom: 1px solid var(--color-line);
+	}
+
+	.project-detail-story__icon {
+		display: grid;
+		width: 2.625rem;
+		height: 2.625rem;
+		margin-bottom: 2.875rem;
+		place-items: center;
+		border: 1px solid rgba(244, 239, 227, 0.25);
+		color: var(--color-gold-soft);
+	}
+
+	h3 {
+		margin: 0 0 0.625rem;
+		font-size: 1.125rem;
+		font-weight: 600;
+	}
+
+	.project-detail-story__capability p {
+		margin: 0;
+		color: var(--color-muted);
+		font-size: 0.8125rem;
+		line-height: 1.6;
+	}
+
+	@media (max-width: 65.625rem) {
+		.project-detail-story__capabilities {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 47.5rem) {
+		.project-detail-story {
+			padding-block: 5.125rem;
+		}
+
+		.project-detail-story__capabilities {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
