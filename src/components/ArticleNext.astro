@@ -1,0 +1,119 @@
+---
+import {
+	getWritingDestination,
+	type WritingEntry,
+} from "../lib/writing";
+
+interface Props {
+	nextEntry?: WritingEntry;
+}
+
+const { nextEntry } = Astro.props;
+const destination = nextEntry
+	? getWritingDestination(nextEntry)
+	: { href: "/writing", external: false };
+const kicker = nextEntry ? "Next essay" : "More writing";
+const heading = nextEntry?.data.title ?? "Continue with the essays";
+const description =
+	nextEntry?.data.description ??
+	"Browse practical writing on development, products, teaching, AI, and the systems behind the work.";
+const linkLabel = nextEntry ? "Read next" : "Back to writing";
+---
+
+<aside class="article-next" aria-labelledby="article-next-title">
+	<div class="article-next__inner shell">
+		<div>
+			<p class="article-next__kicker">{kicker}</p>
+			<h2 id="article-next-title">{heading}</h2>
+			<p class="article-next__description">{description}</p>
+		</div>
+		<a
+			class="article-next__link"
+			href={destination.href}
+			target={destination.external ? "_blank" : undefined}
+			rel={destination.external ? "noreferrer" : undefined}
+		>
+			{linkLabel} <span aria-hidden="true">→</span>
+		</a>
+	</div>
+</aside>
+
+<style>
+	.article-next {
+		padding-block: 5.125rem;
+		border-top: 1px solid var(--color-line);
+	}
+
+	.article-next__inner {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: end;
+		gap: 3.75rem;
+	}
+
+	.article-next__kicker {
+		margin: 0 0 1.5rem;
+		color: var(--color-gold);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	h2 {
+		max-width: 48.75rem;
+		margin: 0 0 0.875rem;
+		font-size: clamp(2.625rem, 5.4vw, 4.5rem);
+		font-weight: 500;
+		letter-spacing: -0.055em;
+		line-height: 1;
+	}
+
+	.article-next__description {
+		max-width: 40rem;
+		margin: 0;
+		color: var(--color-muted);
+	}
+
+	.article-next__link {
+		display: inline-flex;
+		min-height: 3rem;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5625rem;
+		padding-inline: 1.25rem;
+		border: 1px solid var(--color-line);
+		font-size: 0.8125rem;
+		font-weight: 700;
+		text-decoration: none;
+		transition:
+			border-color 180ms ease,
+			color 180ms ease;
+	}
+
+	.article-next__link span {
+		color: var(--color-gold);
+		transition: transform 180ms ease;
+	}
+
+	.article-next__link:hover,
+	.article-next__link:focus-visible {
+		border-color: var(--color-bone);
+	}
+
+	.article-next__link:hover span,
+	.article-next__link:focus-visible span {
+		transform: translateX(0.25rem);
+	}
+
+	@media (max-width: 47.5rem) {
+		.article-next__inner {
+			grid-template-columns: 1fr;
+			gap: 2.125rem;
+		}
+
+		.article-next__link {
+			justify-self: start;
+		}
+	}
+</style>

@@ -113,9 +113,16 @@ const projects = defineCollection({
 });
 
 const writing = defineCollection({
-	loader: glob({ base: "./src/content/writing", pattern: "**/*.md" }),
-	schema: ({ image }) =>
-		z.object({
+	loader: glob({ base: "./src/content/writing", pattern: "**/*.{md,mdx}" }),
+	schema: ({ image }) => {
+		const articleHero = z.object({
+			src: image(),
+			alt: REQUIRED_TEXT,
+			label: REQUIRED_TEXT,
+			caption: REQUIRED_TEXT,
+		});
+
+		return z.object({
 			title: REQUIRED_TEXT,
 			description: REQUIRED_TEXT,
 			publishDate: z.coerce.date(),
@@ -127,7 +134,16 @@ const writing = defineCollection({
 			}),
 			externalUrl: EXTERNAL_URL.optional(),
 			featured: z.boolean(),
-		}),
+			article: z
+				.object({
+					type: REQUIRED_TEXT,
+					tags: z.array(REQUIRED_TEXT).min(1),
+					titleAccent: REQUIRED_TEXT.optional(),
+					hero: articleHero,
+				})
+				.optional(),
+		});
+	},
 });
 
 export const collections = { projects, writing };

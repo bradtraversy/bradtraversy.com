@@ -1,0 +1,149 @@
+---
+import type { InternalWritingEntry } from "../lib/writing";
+import { formatWritingDate } from "../lib/writing";
+
+interface Props {
+	entry: InternalWritingEntry;
+}
+
+const { entry } = Astro.props;
+const { article } = entry.data;
+const requestedAccent = article.titleAccent;
+const titleBase = requestedAccent
+	? entry.data.title.slice(0, -requestedAccent.length)
+	: entry.data.title;
+const titleAccent = requestedAccent
+	? entry.data.title.slice(-requestedAccent.length)
+	: undefined;
+---
+
+<header class="article-hero shell">
+	<a class="article-hero__back" href="/writing">
+		<span aria-hidden="true">←</span> Back to writing
+	</a>
+
+	<div class="article-hero__heading">
+		<p class="article-hero__eyebrow">
+			{entry.data.topic} / {article.type}
+		</p>
+		<h1 id="article-title">
+			{titleBase}{titleAccent && <em>{titleAccent}</em>}
+		</h1>
+		<p class="article-hero__description">{entry.data.description}</p>
+		<div class="article-hero__meta" aria-label="Article details">
+			<span>Brad Traversy</span>
+			<span>{formatWritingDate(entry.data.publishDate)}</span>
+			{article.tags.map((tag) => <span>{tag}</span>)}
+		</div>
+	</div>
+</header>
+
+<style>
+	.article-hero {
+		padding-block: 4.375rem 4rem;
+	}
+
+	.article-hero__back {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.625rem;
+		margin-bottom: 3.875rem;
+		color: var(--color-muted);
+		font-size: 0.8125rem;
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.article-hero__back span {
+		color: var(--color-gold);
+		transition: transform 180ms ease;
+	}
+
+	.article-hero__back:hover,
+	.article-hero__back:focus-visible {
+		color: var(--color-bone);
+	}
+
+	.article-hero__back:hover span,
+	.article-hero__back:focus-visible span {
+		transform: translateX(-0.25rem);
+	}
+
+	.article-hero__heading {
+		max-width: 70rem;
+	}
+
+	.article-hero__eyebrow {
+		margin: 0 0 1.5rem;
+		color: var(--color-gold);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	h1 {
+		max-width: 67.5rem;
+		margin: 0 0 2.125rem;
+		font-size: clamp(3.875rem, 8.4vw, 7.25rem);
+		font-weight: 500;
+		letter-spacing: -0.066em;
+		line-height: 0.93;
+	}
+
+	h1 em {
+		color: var(--color-gold-soft);
+		font-style: normal;
+		font-weight: inherit;
+	}
+
+	.article-hero__description {
+		max-width: 50rem;
+		margin: 0 0 2.125rem;
+		color: var(--color-muted);
+		font-size: clamp(1.125rem, 2vw, 1.4375rem);
+		line-height: 1.6;
+	}
+
+	.article-hero__meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.625rem 1.375rem;
+		color: var(--color-muted);
+		font-size: 0.6875rem;
+		font-weight: 600;
+		letter-spacing: 0.07em;
+		text-transform: uppercase;
+	}
+
+	.article-hero__meta span + span {
+		position: relative;
+	}
+
+	.article-hero__meta span + span::before {
+		position: absolute;
+		top: 50%;
+		left: -0.8125rem;
+		width: 0.1875rem;
+		height: 0.1875rem;
+		border-radius: 50%;
+		background: var(--color-gold);
+		content: "";
+		transform: translateY(-50%);
+	}
+
+	@media (max-width: 47.5rem) {
+		.article-hero {
+			padding-block: 3rem 2.875rem;
+		}
+
+		.article-hero__back {
+			margin-bottom: 2.625rem;
+		}
+
+		h1 {
+			font-size: clamp(3.375rem, 15.8vw, 4.75rem);
+		}
+	}
+</style>

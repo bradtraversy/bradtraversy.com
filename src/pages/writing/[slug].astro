@@ -1,0 +1,51 @@
+---
+import { render } from "astro:content";
+import ArticleCover from "../../components/ArticleCover.astro";
+import ArticleHero from "../../components/ArticleHero.astro";
+import ArticleNext from "../../components/ArticleNext.astro";
+import ArticleProse from "../../components/ArticleProse.astro";
+import { SITE_CONFIG } from "../../data/site";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+	getInternalWritingEntries,
+	getNextWritingEntry,
+	getWritingCatalog,
+	type InternalWritingEntry,
+	type WritingEntry,
+} from "../../lib/writing";
+
+export async function getStaticPaths() {
+	const { entries } = await getWritingCatalog();
+	const internalEntries = getInternalWritingEntries(entries);
+
+	return internalEntries.map((entry) => ({
+		params: { slug: entry.id },
+		props: {
+			entry,
+			nextEntry: getNextWritingEntry(entries, entry),
+		},
+	}));
+}
+
+interface Props {
+	entry: InternalWritingEntry;
+	nextEntry?: WritingEntry;
+}
+
+const { entry, nextEntry } = Astro.props;
+const { Content } = await render(entry);
+const title = `${entry.data.title} | ${SITE_CONFIG.name}`;
+---
+
+<BaseLayout title={title} description={entry.data.description}>
+	<main>
+		<article aria-labelledby="article-title">
+			<ArticleHero entry={entry} />
+			<ArticleCover entry={entry} />
+			<ArticleProse>
+				<Content />
+			</ArticleProse>
+		</article>
+		<ArticleNext nextEntry={nextEntry} />
+	</main>
+</BaseLayout>

@@ -20,7 +20,7 @@
 - [x] 5. **Writing collection and index** - define internal and external writing
   entries and build the clean thumbnail-left, article-info-right listing with
   responsive stacking
-- [ ] 6. **Article pages** - render internal MDX essays with article metadata,
+- [x] 6. **Article pages** - render internal MDX essays with article metadata,
   cover media, readable long-form typography, structured content, and next-entry
   navigation
 - [ ] 7. **Content accuracy and media pass** - replace prototype placeholders

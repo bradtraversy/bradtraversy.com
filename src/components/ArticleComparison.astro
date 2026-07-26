@@ -1,0 +1,87 @@
+---
+interface ComparisonColumn {
+	title: string;
+	items: string[];
+}
+
+interface Props {
+	left: ComparisonColumn;
+	right: ComparisonColumn;
+}
+
+const { left, right } = Astro.props;
+const columns = [left, right];
+---
+
+<div class="article-comparison">
+	{
+		columns.map((column) => (
+			<section>
+				<h3>{column.title}</h3>
+				<ul>
+					{column.items.map((item) => <li>{item}</li>)}
+				</ul>
+			</section>
+		))
+	}
+</div>
+
+<style>
+	.article-comparison {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		margin-block: 2.625rem 3.375rem;
+		border-top: 1px solid var(--color-line);
+		border-left: 1px solid var(--color-line);
+	}
+
+	section {
+		padding: 1.625rem;
+		border-right: 1px solid var(--color-line);
+		border-bottom: 1px solid var(--color-line);
+	}
+
+	h3 {
+		margin: 0 0 1.125rem;
+		color: var(--color-gold-soft);
+		font-size: 0.8125rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	li {
+		position: relative;
+		margin-bottom: 0.5625rem;
+		padding-left: 1rem;
+		color: var(--color-muted);
+		font-size: 0.8125rem;
+	}
+
+	li:last-child {
+		margin-bottom: 0;
+	}
+
+	li::before {
+		position: absolute;
+		top: 0.72em;
+		left: 0;
+		width: 0.25rem;
+		height: 0.25rem;
+		border-radius: 50%;
+		background: var(--color-gold);
+		content: "";
+	}
+
+	@media (max-width: 47.5rem) {
+		.article-comparison {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

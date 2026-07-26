@@ -1,6 +1,13 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 
 export type WritingEntry = CollectionEntry<"writing">;
+export type WritingArticleData = NonNullable<WritingEntry["data"]["article"]>;
+export type InternalWritingEntry = WritingEntry & {
+	data: WritingEntry["data"] & {
+		externalUrl?: undefined;
+		article: WritingArticleData;
+	};
+};
 
 export interface WritingTopic {
 	label: string;
@@ -35,15 +42,37 @@ function normalizeTopicId(topic: string): string {
 		.replace(/^-|-$/g, "");
 }
 
-function validateWritingBody(entry: WritingEntry): void {
+function validateWritingEntry(entry: WritingEntry): void {
 	const hasBody = Boolean(entry.body?.trim());
+	const article = entry.data.article;
 
-	if (entry.data.externalUrl && hasBody) {
-		throw new Error(`External writing entry "${entry.id}" must not have a body.`);
+	if (entry.data.externalUrl) {
+		if (hasBody) {
+			throw new Error(`External writing entry "${entry.id}" must not have a body.`);
+		}
+
+		if (article) {
+			throw new Error(`External writing entry "${entry.id}" must not have article metadata.`);
+		}
+
+		return;
 	}
 
-	if (!entry.data.externalUrl && !hasBody) {
+	if (!hasBody) {
 		throw new Error(`Internal writing entry "${entry.id}" requires a body.`);
+	}
+
+	if (!article) {
+		throw new Error(`Internal writing entry "${entry.id}" requires article metadata.`);
+	}
+
+	if (
+		article.titleAccent &&
+		!entry.data.title.toLowerCase().endsWith(article.titleAccent.toLowerCase())
+	) {
+		throw new Error(
+			`Writing entry "${entry.id}" title must end with accent "${article.titleAccent}".`,
+		);
 	}
 }
 
@@ -80,6 +109,31 @@ function getWritingTopics(entries: WritingEntry[]): WritingTopic[] {
 	return topics;
 }
 
+export function isInternalWritingEntry(
+	entry: WritingEntry,
+): entry is InternalWritingEntry {
+	return (
+		!entry.data.externalUrl &&
+		Boolean(entry.data.article) &&
+		Boolean(entry.body?.trim())
+	);
+}
+
+export function getInternalWritingEntries(
+	entries: WritingEntry[],
+): InternalWritingEntry[] {
+	return entries.filter(isInternalWritingEntry);
+}
+
+export function getNextWritingEntry(
+	entries: WritingEntry[],
+	entry: WritingEntry,
+): WritingEntry | undefined {
+	const currentIndex = entries.findIndex((candidate) => candidate.id === entry.id);
+
+	return currentIndex >= 0 ? entries[currentIndex + 1] : undefined;
+}
+
 export async function getWritingCatalog(): Promise<WritingCatalog> {
 	const entries = await getCollection("writing");
 	const sortedEntries = [...entries].sort(
@@ -89,7 +143,7 @@ export async function getWritingCatalog(): Promise<WritingCatalog> {
 	);
 
 	for (const entry of sortedEntries) {
-		validateWritingBody(entry);
+		validateWritingEntry(entry);
 	}
 
 	const featuredEntries = sortedEntries.filter((entry) => entry.data.featured);
