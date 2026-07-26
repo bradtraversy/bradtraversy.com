@@ -1,43 +1,62 @@
-# Astro Starter Kit: Minimal
+# bradtraversy.com
 
-```sh
-pnpm create astro@latest -- --template minimal
+The personal portfolio and writing site for Brad Traversy. It brings together
+education work, software projects, and long-form articles in a focused static
+site.
+
+![Brad Traversy portfolio homepage](.github/assets/bradtraversy-homepage.jpg)
+
+## Features
+
+- Responsive portfolio homepage with education, project, writing, and contact
+  sections
+- Repository-backed project and writing collections with build-time validation
+- Static project case studies and internal MDX article pages
+- Support for writing hosted locally or linked to an external publication
+- Optimized local images, accessible navigation, visible focus states, and
+  reduced-motion support
+
+## Built with
+
+- [Astro](https://astro.build/)
+- TypeScript
+- Astro content collections
+- MDX
+- Plain CSS
+- pnpm
+
+## Local development
+
+Requires Node.js 22.12 or newer and pnpm.
+
+```bash
+pnpm install
+pnpm dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+The development server runs at `http://localhost:4321`.
 
-## 🚀 Project Structure
+## Commands
 
-Inside of your Astro project, you'll see the following folders and files:
+| Command | Description |
+| --- | --- |
+| `pnpm dev` | Start the Astro development server |
+| `pnpm build` | Create the production build in `dist/` |
+| `pnpm preview` | Preview the production build locally |
+| `pnpm astro -- <command>` | Run an Astro CLI command |
+
+## Project structure
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+  assets/       Local images processed by Astro
+  components/   Shared page and content components
+  content/      Project and writing collections
+  data/         Site-wide configuration and structured data
+  layouts/      Shared document layouts
+  pages/        Static routes and dynamic collection routes
+  styles/       Global design tokens and shared styles
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Project planning, active feature context, and completed feature history live in
+the `blueprint/` directory.
