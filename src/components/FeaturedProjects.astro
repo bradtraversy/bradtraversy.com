@@ -1,0 +1,287 @@
+---
+import { Image } from "astro:assets";
+import type { ProjectEntry } from "../lib/projects";
+
+interface Props {
+	projects: ProjectEntry[];
+}
+
+const { projects } = Astro.props;
+---
+
+<section class="featured-projects shell" aria-label="Featured projects">
+	<div class="featured-projects__list">
+		{
+			projects.map((project, index) => {
+				const { data } = project;
+				const sequence = String(index + 1).padStart(2, "0");
+
+				return (
+					<article class="featured-project">
+						<a
+							class="featured-project__media"
+							href={data.liveUrl}
+							target="_blank"
+							rel="noreferrer"
+							aria-label={`Visit ${data.title}`}
+						>
+							<Image
+								src={data.hero.src}
+								alt={data.hero.alt}
+								widths={[640, 960, 1280]}
+								sizes="(max-width: 1050px) calc(100vw - 3rem), 52vw"
+							/>
+						</a>
+
+						<div class="featured-project__copy">
+							<p class="featured-project__number">
+								{sequence} / {data.type}
+							</p>
+							<div class="featured-project__title-row">
+								<h2>{data.title}</h2>
+								<span class="featured-project__status">{data.status}</span>
+							</div>
+							<p class="featured-project__tagline">{data.tagline}</p>
+							<p class="featured-project__description">{data.summary}</p>
+
+							<dl class="featured-project__facts">
+								<div>
+									<dt>Role</dt>
+									<dd>{data.role}</dd>
+								</div>
+								<div>
+									<dt>Built with</dt>
+									<dd>{data.stack.join(", ")}</dd>
+								</div>
+							</dl>
+
+							<div class="featured-project__actions">
+								<a
+									class="featured-project__button featured-project__button--primary"
+									href={data.liveUrl}
+									target="_blank"
+									rel="noreferrer"
+								>
+									Visit {data.title} <span aria-hidden="true">↗</span>
+								</a>
+								{
+									data.devlogUrl && (
+										<a
+											class="featured-project__button"
+											href={data.devlogUrl}
+											target="_blank"
+											rel="noreferrer"
+										>
+											Project notes
+										</a>
+									)
+								}
+							</div>
+						</div>
+					</article>
+				);
+			})
+		}
+	</div>
+</section>
+
+<style>
+	.featured-projects {
+		padding-bottom: 7.75rem;
+	}
+
+	.featured-projects__list {
+		border-top: 1px solid var(--color-line);
+	}
+
+	.featured-project {
+		display: grid;
+		grid-template-columns: minmax(0, 1.15fr) minmax(21.25rem, 0.85fr);
+		align-items: center;
+		gap: clamp(2.625rem, 5vw, 4.875rem);
+		padding-block: 4.5rem;
+		border-bottom: 1px solid var(--color-line);
+	}
+
+	.featured-project:nth-child(even) .featured-project__media {
+		order: 2;
+	}
+
+	.featured-project__media {
+		position: relative;
+		aspect-ratio: 16 / 10;
+		overflow: hidden;
+		border: 1px solid var(--color-line);
+		background: linear-gradient(145deg, rgba(20, 16, 11, 0.98), rgba(8, 8, 8, 0.98));
+	}
+
+	.featured-project__media :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center top;
+		transition: transform 260ms ease;
+	}
+
+	.featured-project__media:hover :global(img),
+	.featured-project__media:focus-visible :global(img) {
+		transform: scale(1.015);
+	}
+
+	.featured-project__number {
+		margin: 0 0 1.375rem;
+		color: var(--color-gold);
+		font-size: 0.6875rem;
+		font-weight: 700;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	.featured-project__title-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.5rem;
+		margin-bottom: 1.125rem;
+	}
+
+	h2 {
+		margin: 0;
+		font-size: clamp(2.375rem, 4vw, 3.75rem);
+		font-weight: 500;
+		letter-spacing: -0.05em;
+		line-height: 1;
+	}
+
+	.featured-project__status {
+		flex: none;
+		padding: 0.3125rem 0.5625rem;
+		border: 1px solid rgba(229, 173, 69, 0.42);
+		color: var(--color-gold-soft);
+		font-size: 0.625rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.featured-project__tagline {
+		margin: 0 0 1.125rem;
+		font-size: 1.1875rem;
+		line-height: 1.45;
+	}
+
+	.featured-project__description {
+		margin: 0 0 1.875rem;
+		color: var(--color-muted);
+	}
+
+	.featured-project__facts {
+		display: grid;
+		grid-template-columns: 0.8fr 1.2fr;
+		margin: 0 0 1.875rem;
+		border-top: 1px solid var(--color-line);
+		border-bottom: 1px solid var(--color-line);
+	}
+
+	.featured-project__facts div {
+		padding: 1rem 0;
+	}
+
+	.featured-project__facts div + div {
+		padding-left: 1.375rem;
+		border-left: 1px solid var(--color-line);
+	}
+
+	.featured-project__facts dt {
+		margin-bottom: 0.1875rem;
+		color: var(--color-muted);
+		font-size: 0.625rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+	}
+
+	.featured-project__facts dd {
+		margin: 0;
+		font-size: 0.75rem;
+	}
+
+	.featured-project__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.featured-project__button {
+		display: inline-flex;
+		min-height: 3rem;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5625rem;
+		padding-inline: 1.25rem;
+		border: 1px solid var(--color-line);
+		font-size: 0.8125rem;
+		font-weight: 700;
+		text-decoration: none;
+		transition:
+			background 180ms ease,
+			border-color 180ms ease,
+			color 180ms ease;
+	}
+
+	.featured-project__button--primary {
+		border-color: var(--color-gold);
+		background: var(--color-gold);
+		color: var(--color-black);
+	}
+
+	.featured-project__button--primary:hover,
+	.featured-project__button--primary:focus-visible {
+		border-color: var(--color-gold-soft);
+		background: var(--color-gold-soft);
+	}
+
+	.featured-project__button:not(.featured-project__button--primary):hover,
+	.featured-project__button:not(.featured-project__button--primary):focus-visible {
+		border-color: var(--color-bone);
+	}
+
+	@media (max-width: 65.625rem) {
+		.featured-project {
+			grid-template-columns: 1fr;
+		}
+
+		.featured-project:nth-child(even) .featured-project__media {
+			order: 0;
+		}
+
+		.featured-project__copy {
+			max-width: 45rem;
+		}
+	}
+
+	@media (max-width: 40rem) {
+		.featured-projects {
+			padding-bottom: 5.375rem;
+		}
+
+		.featured-project {
+			gap: 2.125rem;
+			padding-block: 3.125rem;
+		}
+
+		.featured-project__title-row {
+			align-items: flex-start;
+		}
+
+		.featured-project__facts {
+			grid-template-columns: 1fr;
+		}
+
+		.featured-project__facts div + div {
+			padding-left: 0;
+			border-top: 1px solid var(--color-line);
+			border-left: 0;
+		}
+	}
+</style>

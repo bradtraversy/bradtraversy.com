@@ -1,0 +1,109 @@
+<section class="projects-hero shell" aria-labelledby="projects-page-title">
+	<div>
+		<p class="projects-hero__eyebrow">Independent software</p>
+		<h1 id="projects-page-title">Products built from <em>real problems.</em></h1>
+	</div>
+
+	<div class="projects-hero__copy">
+		<p>
+			A selected set of developer tools, products, and experiments. These are the
+			projects with real users, a clear purpose, or an idea worth pushing further.
+		</p>
+		<a
+			class="projects-hero__link"
+			href="https://bradtraversy.dev/projects"
+			target="_blank"
+			rel="noreferrer"
+		>
+			Follow the detailed build logs <span aria-hidden="true">→</span>
+		</a>
+	</div>
+</section>
+
+<style>
+	.projects-hero {
+		display: grid;
+		grid-template-columns: minmax(0, 1.3fr) minmax(20rem, 0.7fr);
+		align-items: end;
+		gap: 4.5rem;
+		padding-block: 6.625rem 5.375rem;
+	}
+
+	.projects-hero__eyebrow {
+		margin: 0 0 1.5rem;
+		color: var(--color-gold);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	h1 {
+		max-width: 55.625rem;
+		margin: 0;
+		font-size: clamp(3.625rem, 7.1vw, 6.75rem);
+		font-weight: 500;
+		letter-spacing: -0.066em;
+		line-height: 0.94;
+	}
+
+	h1 em {
+		color: var(--color-gold-soft);
+		font-style: normal;
+		font-weight: inherit;
+	}
+
+	.projects-hero__copy {
+		max-width: 30.625rem;
+		padding-bottom: 0.5rem;
+	}
+
+	.projects-hero__copy p {
+		margin: 0 0 1.875rem;
+		color: var(--color-muted);
+		font-size: 1.125rem;
+	}
+
+	.projects-hero__link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.625rem;
+		font-size: 0.875rem;
+		font-weight: 700;
+	}
+
+	.projects-hero__link span {
+		color: var(--color-gold);
+		transition: transform 180ms ease;
+	}
+
+	.projects-hero__link:hover span,
+	.projects-hero__link:focus-visible span {
+		transform: translateX(0.25rem);
+	}
+
+	@media (max-width: 65.625rem) {
+		.projects-hero {
+			grid-template-columns: 1fr;
+			gap: 2.375rem;
+		}
+
+		.projects-hero__copy {
+			max-width: 41.25rem;
+		}
+	}
+
+	@media (max-width: 40rem) {
+		.projects-hero {
+			padding-block: 4rem 3.625rem;
+		}
+
+		h1 {
+			font-size: 3.375rem;
+		}
+
+		.projects-hero__copy p {
+			font-size: 1rem;
+		}
+	}
+</style>

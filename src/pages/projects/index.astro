@@ -1,0 +1,23 @@
+---
+import FeaturedProjects from "../../components/FeaturedProjects.astro";
+import ProjectArchiveCta from "../../components/ProjectArchiveCta.astro";
+import ProjectCatalog from "../../components/ProjectCatalog.astro";
+import ProjectsHero from "../../components/ProjectsHero.astro";
+import { SITE_CONFIG } from "../../data/site";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getProjectCatalog } from "../../lib/projects";
+
+const title = `Projects | ${SITE_CONFIG.name}`;
+const description =
+	"Selected software products, developer tools, and open-source projects built by Brad Traversy.";
+const { featured, additional } = await getProjectCatalog();
+---
+
+<BaseLayout title={title} description={description}>
+	<main>
+		<ProjectsHero />
+		<FeaturedProjects projects={featured} />
+		<ProjectCatalog projects={additional} />
+		<ProjectArchiveCta />
+	</main>
+</BaseLayout>

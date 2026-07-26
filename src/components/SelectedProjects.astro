@@ -1,6 +1,8 @@
 ---
 import { Image } from "astro:assets";
-import { HOMEPAGE_PROJECTS } from "../data/home";
+import { getProjectCatalog } from "../lib/projects";
+
+const { projects } = await getProjectCatalog();
 ---
 
 <section class="projects section" id="projects" aria-labelledby="projects-title">
@@ -18,29 +20,29 @@ import { HOMEPAGE_PROJECTS } from "../data/home";
 
 		<div class="projects__gallery">
 			{
-				HOMEPAGE_PROJECTS.map((project) => (
+				projects.map(({ data }) => (
 					<a
 						class="project"
-						href={project.url}
+						href={data.liveUrl}
 						target="_blank"
 						rel="noreferrer"
-						aria-label={`Visit ${project.title}: ${project.summary}`}
+						aria-label={`Visit ${data.title}: ${data.summary}`}
 					>
 						<div class="project__media">
 							<Image
-								src={project.image}
-								alt={project.alt}
+								src={data.hero.src}
+								alt={data.hero.alt}
 								widths={[480, 720, 960]}
 								sizes="(max-width: 640px) calc(100vw - 3rem), (max-width: 1440px) calc((100vw - 8rem) / 2), 39rem"
 							/>
 						</div>
 						<div class="project__copy">
 							<div>
-								<span class="project__type">{project.type}</span>
-								<h3>{project.title}</h3>
+								<span class="project__type">{data.type}</span>
+								<h3>{data.title}</h3>
 							</div>
 							<span class="project__arrow" aria-hidden="true">↗</span>
-							<p>{project.summary}</p>
+							<p>{data.summary}</p>
 						</div>
 					</a>
 				))

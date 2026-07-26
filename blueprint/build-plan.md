@@ -12,7 +12,7 @@
 - [x] 2. **Portfolio homepage** - build the approved homepage flow for identity,
   credibility, education platforms, selected projects, featured writing, about,
   social links, contact, and the bradtraversy.dev devlog path
-- [ ] 3. **Project collection and index** - define validated project content,
+- [x] 3. **Project collection and index** - define validated project content,
   seed the curated catalog, and build the featured and additional-project listing
 - [ ] 4. **Project detail pages** - generate project case-study routes with
   narrative sections, role and stack facts, capabilities, media galleries,
