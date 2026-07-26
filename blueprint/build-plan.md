@@ -6,7 +6,7 @@
 
 ## MVP
 
-- [ ] 1. **Visual foundation and site shell** - establish the approved design
+- [x] 1. **Visual foundation and site shell** - establish the approved design
   tokens, typography, responsive layout, shared metadata, header, mobile
   navigation, footer, and reusable primitives
 - [ ] 2. **Portfolio homepage** - build the approved homepage flow for identity,

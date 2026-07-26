@@ -1,0 +1,41 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	<div class="site-footer__inner shell">
+		<p>&copy; {currentYear} Brad Traversy</p>
+		<p>Developer. Educator. Product builder.</p>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		border-top: 1px solid var(--color-line);
+		color: var(--color-muted);
+	}
+
+	.site-footer__inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding-block: 1.75rem;
+	}
+
+	.site-footer p {
+		margin: 0;
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	@media (max-width: 47.5rem) {
+		.site-footer__inner {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 0.5rem;
+			padding-block: 1.5rem;
+		}
+	}
+</style>

@@ -1,17 +1,60 @@
 ---
-
+import { SITE_CONFIG } from "../data/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title={SITE_CONFIG.name} description={SITE_CONFIG.description}>
+	<main class="shell-preview shell" id="foundation">
+		<section aria-labelledby="shell-preview-title">
+			<p class="shell-preview__label">Site shell preview</p>
+			<h1 id="shell-preview-title">Brad Traversy</h1>
+			<p class="shell-preview__summary">Developer. Educator. Product builder.</p>
+		</section>
+	</main>
+</BaseLayout>
+
+<style>
+	.shell-preview {
+		display: grid;
+		align-items: center;
+		padding-block: clamp(4rem, 12vw, 9rem);
+	}
+
+	.shell-preview section {
+		max-width: 44rem;
+	}
+
+	.shell-preview__label {
+		margin: 0 0 1rem;
+		color: var(--color-gold);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	.shell-preview h1 {
+		margin: 0;
+		font-size: clamp(3rem, 7vw, 5.5rem);
+		font-weight: 500;
+		letter-spacing: -0.055em;
+		line-height: 0.95;
+	}
+
+	.shell-preview__summary {
+		margin: 1.5rem 0 0;
+		color: var(--color-muted);
+		font-size: clamp(1rem, 2vw, 1.25rem);
+	}
+
+	@media (max-width: 47.5rem) {
+		.shell-preview {
+			align-items: start;
+			padding-block: 5rem;
+		}
+
+		.shell-preview h1 {
+			font-size: clamp(3rem, 16vw, 4.5rem);
+		}
+	}
+</style>

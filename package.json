@@ -12,6 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@fontsource/manrope": "^5.3.0",
     "astro": "^7.1.3"
   }
 }

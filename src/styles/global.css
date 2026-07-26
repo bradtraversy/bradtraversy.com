@@ -1,0 +1,84 @@
+@import "@fontsource/manrope/latin-400.css";
+@import "@fontsource/manrope/latin-500.css";
+@import "@fontsource/manrope/latin-600.css";
+@import "@fontsource/manrope/latin-700.css";
+
+:root {
+	color-scheme: dark;
+	--color-black: #0b0907;
+	--color-black-soft: #14100b;
+	--color-bone: #f4efe3;
+	--color-muted: #9d988d;
+	--color-gold: #e5ad45;
+	--color-gold-soft: #f2cf88;
+	--color-line: rgba(244, 239, 227, 0.15);
+	--content-max: 82.5rem;
+	--page-gutter: clamp(1.5rem, 4vw, 3.75rem);
+	--font-sans: "Manrope", Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+	min-width: 20rem;
+	min-height: 100vh;
+	background:
+		radial-gradient(circle at 78% 8%, rgba(178, 116, 38, 0.11), transparent 34rem),
+		linear-gradient(160deg, #0d0a07 0%, var(--color-black) 46%, #080808 100%);
+	color: var(--color-bone);
+	font-family: var(--font-sans);
+	font-size: 1rem;
+	line-height: 1.6;
+}
+
+a {
+	color: inherit;
+}
+
+img {
+	display: block;
+	max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+	font: inherit;
+}
+
+:where(a, button, input, select, textarea, summary):focus-visible {
+	outline: 2px solid var(--color-gold);
+	outline-offset: 4px;
+}
+
+.shell {
+	width: min(calc(100% - (var(--page-gutter) * 2)), var(--content-max));
+	margin-inline: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		scroll-behavior: auto !important;
+		transition-duration: 0.01ms !important;
+	}
+}
