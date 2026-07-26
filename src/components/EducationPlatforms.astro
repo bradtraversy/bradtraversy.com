@@ -1,0 +1,204 @@
+---
+import { SITE_CONFIG } from "../data/site";
+import PlatformIcon from "./PlatformIcon.astro";
+
+const linkLabels: Record<string, string> = {
+	YouTube: "Visit the channel",
+	"Traversy Media": "Explore the courses",
+	"Start.dev": "Learn on Start.dev",
+};
+---
+
+<section class="education section shell" id="content" aria-labelledby="content-title">
+	<div class="section__head">
+		<div>
+			<p class="section__kicker">Content and education</p>
+			<h2 id="content-title">Three distinct ways to <em>learn and build.</em></h2>
+		</div>
+		<p class="section__note">
+			YouTube, Traversy Media, and Start.dev each serve a different purpose. They stay
+			connected by the same goal: practical education without the filler.
+		</p>
+	</div>
+
+	<div class="platforms">
+		{
+			SITE_CONFIG.platforms.map((platform, index) => (
+				<a
+					class="platform"
+					href={platform.url}
+					target="_blank"
+					rel="noreferrer"
+					aria-label={`${platform.name}: ${linkLabels[platform.name]}`}
+				>
+					<div class="platform__top">
+						<span class="platform__index">
+							{String(index + 1).padStart(2, "0")} · {platform.label}
+						</span>
+						<span class="platform__icon">
+							<PlatformIcon icon={platform.icon} />
+						</span>
+					</div>
+					<h3>{platform.name}</h3>
+					<p>{platform.description}</p>
+					<span class="platform__link">
+						{linkLabels[platform.name]} <span aria-hidden="true">→</span>
+					</span>
+				</a>
+			))
+		}
+	</div>
+</section>
+
+<style>
+	.section {
+		padding-block: 8.25rem;
+	}
+
+	.section__head {
+		display: grid;
+		grid-template-columns: 1fr 1.4fr;
+		align-items: end;
+		gap: 5rem;
+		margin-bottom: 4.375rem;
+	}
+
+	.section__kicker {
+		margin: 0 0 1.5rem;
+		color: var(--color-gold);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	h2 {
+		max-width: 45rem;
+		margin: 0;
+		font-size: clamp(2.625rem, 5vw, 4.625rem);
+		font-weight: 500;
+		letter-spacing: -0.05em;
+		line-height: 1;
+	}
+
+	h2 em {
+		color: var(--color-gold-soft);
+		font-style: normal;
+		font-weight: inherit;
+	}
+
+	.section__note {
+		max-width: 31.875rem;
+		justify-self: end;
+		margin: 0 0 0.25rem;
+		color: var(--color-muted);
+	}
+
+	.platforms {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		border-block: 1px solid var(--color-line);
+	}
+
+	.platform {
+		min-height: 20rem;
+		padding: 2.875rem 2.625rem 2.625rem;
+		text-decoration: none;
+	}
+
+	.platform + .platform {
+		border-left: 1px solid var(--color-line);
+	}
+
+	.platform__top {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 1.5rem;
+		margin-bottom: 3.5rem;
+	}
+
+	.platform__index {
+		color: var(--color-gold);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+	}
+
+	.platform__icon {
+		display: grid;
+		width: 2.75rem;
+		height: 2.75rem;
+		place-items: center;
+		border: 1px solid var(--color-line);
+		color: var(--color-gold-soft);
+	}
+
+	h3 {
+		margin: 0 0 1rem;
+		font-size: clamp(1.8125rem, 2.6vw, 2.625rem);
+		font-weight: 500;
+		letter-spacing: -0.04em;
+		transition: color 180ms ease;
+	}
+
+	.platform p {
+		max-width: 21.25rem;
+		margin: 0 0 1.875rem;
+		color: var(--color-muted);
+		font-size: 0.875rem;
+	}
+
+	.platform__link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.625rem;
+		color: var(--color-gold-soft);
+		font-size: 0.875rem;
+		font-weight: 700;
+	}
+
+	.platform:hover h3 {
+		color: var(--color-gold-soft);
+	}
+
+	@media (max-width: 56.25rem) {
+		.section__head,
+		.platforms {
+			grid-template-columns: 1fr;
+		}
+
+		.section__head {
+			gap: 2.5rem;
+		}
+
+		.section__note {
+			justify-self: start;
+		}
+
+		.platform {
+			min-height: auto;
+			padding-inline: 0;
+		}
+
+		.platform + .platform {
+			border-top: 1px solid var(--color-line);
+			border-left: 0;
+		}
+
+		.platform__top {
+			margin-bottom: 1.875rem;
+		}
+	}
+
+	@media (max-width: 40rem) {
+		.section {
+			padding-block: 5.5rem;
+		}
+
+		.section__head {
+			margin-bottom: 3rem;
+		}
+	}
+</style>

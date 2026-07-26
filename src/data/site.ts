@@ -4,11 +4,35 @@ export interface NavItem {
 	external: boolean;
 }
 
+export type SocialIconName =
+	| "github"
+	| "x"
+	| "youtube"
+	| "linkedin"
+	| "instagram"
+	| "facebook"
+	| "patreon";
+
 export interface SocialLink {
 	name: string;
 	label: string;
 	url: string;
-	icon: "github" | "x" | "youtube" | "instagram";
+	icon: SocialIconName;
+}
+
+export interface EducationPlatform {
+	name: string;
+	label: string;
+	description: string;
+	url: string;
+	order: number;
+	icon: "youtube" | "graduation" | "code";
+}
+
+export interface CredibilityFact {
+	value: string;
+	description: string;
+	url?: string;
 }
 
 export interface SiteConfig {
@@ -16,6 +40,8 @@ export interface SiteConfig {
 	description: string;
 	navigation: NavItem[];
 	socialLinks: SocialLink[];
+	platforms: EducationPlatform[];
+	credibilityFacts: CredibilityFact[];
 }
 
 export const SITE_CONFIG = {
@@ -58,6 +84,50 @@ export const SITE_CONFIG = {
 			label: "Traversy Media on Instagram",
 			url: "https://www.instagram.com/traversymedia/",
 			icon: "instagram",
+		},
+	],
+	platforms: [
+		{
+			name: "YouTube",
+			label: "Watch",
+			description:
+				"Free tutorials, project builds, developer commentary, and practical walkthroughs for more than two million subscribers.",
+			url: "https://www.youtube.com/@TraversyMedia",
+			order: 1,
+			icon: "youtube",
+		},
+		{
+			name: "Traversy Media",
+			label: "Courses",
+			description:
+				"The long-running education brand and home for complete, self-paced web development courses.",
+			url: "https://www.traversymedia.com/",
+			order: 2,
+			icon: "graduation",
+		},
+		{
+			name: "Start.dev",
+			label: "Interactive",
+			description:
+				"A modern learning platform built around focused lessons, real coding challenges, and structured progress.",
+			url: "https://start.dev/",
+			order: 3,
+			icon: "code",
+		},
+	],
+	credibilityFacts: [
+		{
+			value: "2M+ YouTube subscribers",
+			description: "Practical education for working developers",
+		},
+		{
+			value: "Coding since 2007",
+			description: "Teaching, creating, and building products",
+		},
+		{
+			value: "Building in public",
+			description: "Daily work and devlogs",
+			url: "https://bradtraversy.dev",
 		},
 	],
 } satisfies SiteConfig;

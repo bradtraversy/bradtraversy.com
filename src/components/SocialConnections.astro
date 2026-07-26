@@ -1,0 +1,182 @@
+---
+import { CONNECTION_LINKS } from "../data/home";
+import SocialIcon from "./SocialIcon.astro";
+---
+
+<section class="socials section" id="socials" aria-labelledby="socials-title">
+	<div class="shell">
+		<div class="section__head">
+			<div>
+				<p class="section__kicker">Connect</p>
+				<h2 id="socials-title">Find me <em>online.</em></h2>
+			</div>
+			<p class="section__note">
+				Follow the tutorials, code, products, and occasional behind-the-scenes updates
+				across the platforms I use.
+			</p>
+		</div>
+
+		<div class="socials__grid">
+			{
+				CONNECTION_LINKS.map((social) => (
+					<a
+						class="social"
+						href={social.url}
+						target="_blank"
+						rel="noreferrer"
+						aria-label={social.label}
+					>
+						<span class="social__icon" aria-hidden="true">
+							<SocialIcon icon={social.icon} />
+						</span>
+						<span class="social__copy">
+							<strong>{social.name}</strong>
+							<span>{social.handle}</span>
+						</span>
+					</a>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	.section {
+		padding-block: 8.25rem;
+	}
+
+	.socials {
+		border-top: 1px solid var(--color-line);
+		background: linear-gradient(145deg, rgba(22, 17, 10, 0.97), rgba(13, 12, 10, 0.98));
+	}
+
+	.section__head {
+		display: grid;
+		grid-template-columns: 1fr 1.4fr;
+		align-items: end;
+		gap: 5rem;
+		margin-bottom: 4.375rem;
+	}
+
+	.section__kicker {
+		margin: 0 0 1.5rem;
+		color: var(--color-gold);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	h2 {
+		max-width: 45rem;
+		margin: 0;
+		font-size: clamp(2.625rem, 5vw, 4.625rem);
+		font-weight: 500;
+		letter-spacing: -0.05em;
+		line-height: 1;
+	}
+
+	h2 em {
+		color: var(--color-gold-soft);
+		font-style: normal;
+		font-weight: inherit;
+	}
+
+	.section__note {
+		max-width: 31.875rem;
+		justify-self: end;
+		margin: 0 0 0.25rem;
+		color: var(--color-muted);
+	}
+
+	.socials__grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 0 2.375rem;
+		border-top: 1px solid var(--color-line);
+	}
+
+	.social {
+		display: grid;
+		min-width: 0;
+		min-height: 5.75rem;
+		grid-template-columns: 2.75rem 1fr;
+		align-items: center;
+		gap: 1rem;
+		border-bottom: 1px solid var(--color-line);
+		text-decoration: none;
+	}
+
+	.social__icon {
+		display: grid;
+		width: 2.75rem;
+		height: 2.75rem;
+		place-items: center;
+		border: 1px solid var(--color-line);
+		color: var(--color-gold-soft);
+		transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+	}
+
+	.social__icon :global(svg) {
+		width: 1.0625rem;
+		height: 1.0625rem;
+	}
+
+	.social__copy {
+		min-width: 0;
+	}
+
+	.social__copy strong,
+	.social__copy span {
+		display: block;
+	}
+
+	.social__copy strong {
+		margin-bottom: 0.125rem;
+		font-size: 0.875rem;
+		font-weight: 600;
+	}
+
+	.social__copy span {
+		overflow: hidden;
+		color: var(--color-muted);
+		font-size: 0.6875rem;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.social:hover .social__icon {
+		border-color: var(--color-gold);
+		background: var(--color-gold);
+		color: var(--color-black);
+	}
+
+	@media (max-width: 56.25rem) {
+		.section__head {
+			grid-template-columns: 1fr;
+			gap: 2.5rem;
+		}
+
+		.section__note {
+			justify-self: start;
+		}
+
+		.socials__grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 40rem) {
+		.section {
+			padding-block: 5.5rem;
+		}
+
+		.section__head {
+			margin-bottom: 3rem;
+		}
+
+		.socials__grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

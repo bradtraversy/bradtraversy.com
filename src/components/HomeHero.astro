@@ -1,0 +1,168 @@
+---
+import { Image } from "astro:assets";
+import bradPortrait from "../assets/home/brad-portrait.png";
+---
+
+<section class="hero shell" aria-labelledby="hero-title">
+	<div class="hero__copy">
+		<p class="hero__eyebrow">Developer. Educator. Product builder.</p>
+		<h1 id="hero-title">I teach <em>developers</em><br />and build products.</h1>
+		<p class="hero__intro">
+			I'm Brad Traversy. I create practical software, educational content, and tools
+			used by developers around the world.
+		</p>
+		<div class="hero__actions">
+			<a class="hero__button hero__button--primary" href="#content">Explore the work</a>
+			<a class="hero__button" href="#writing">Read the blog</a>
+		</div>
+	</div>
+
+	<figure class="hero__portrait-wrap">
+		<div class="hero__portrait">
+			<Image
+				src={bradPortrait}
+				alt="Portrait of Brad Traversy"
+				widths={[340, 470, 680]}
+				sizes="(max-width: 640px) 340px, 470px"
+				loading="eager"
+			/>
+		</div>
+	</figure>
+</section>
+
+<style>
+	.hero {
+		display: grid;
+		min-height: calc(100vh - 5.5rem);
+		grid-template-columns: minmax(0, 1fr) minmax(27.5rem, 29.375rem);
+		align-items: center;
+		gap: clamp(2.25rem, 3vw, 3.25rem);
+		padding-block: 4rem 4.25rem;
+	}
+
+	.hero__eyebrow {
+		margin: 0 0 1.5rem;
+		color: var(--color-gold);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	h1 {
+		max-width: 56.25rem;
+		margin: 0 0 1.875rem;
+		font-size: clamp(3.625rem, 6.6vw, 6.625rem);
+		font-weight: 500;
+		letter-spacing: -0.065em;
+		line-height: 0.96;
+		white-space: nowrap;
+	}
+
+	h1 em {
+		color: var(--color-gold-soft);
+		font-style: normal;
+		font-weight: inherit;
+	}
+
+	.hero__intro {
+		max-width: 40.625rem;
+		margin: 0 0 2.375rem;
+		color: var(--color-muted);
+		font-size: clamp(1.0625rem, 1.3vw, 1.25rem);
+	}
+
+	.hero__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.875rem;
+	}
+
+	.hero__button {
+		display: inline-flex;
+		min-height: 3.25rem;
+		align-items: center;
+		justify-content: center;
+		padding-inline: 1.5rem;
+		border: 1px solid var(--color-line);
+		font-size: 0.875rem;
+		font-weight: 700;
+		text-decoration: none;
+		transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+	}
+
+	.hero__button:hover {
+		border-color: var(--color-bone);
+	}
+
+	.hero__button--primary {
+		border-color: var(--color-gold);
+		background: var(--color-gold);
+		color: var(--color-black);
+	}
+
+	.hero__button--primary:hover {
+		border-color: var(--color-gold-soft);
+		background: var(--color-gold-soft);
+	}
+
+	.hero__portrait-wrap {
+		width: min(100%, 29.375rem);
+		max-width: 100%;
+		margin: 0;
+		justify-self: end;
+	}
+
+	.hero__portrait {
+		width: 100%;
+		aspect-ratio: 1;
+		overflow: hidden;
+		filter: contrast(1.03);
+	}
+
+	.hero__portrait :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center top;
+		-webkit-mask-image:
+			linear-gradient(to bottom, transparent 0%, #000 10%, #000 72%, transparent 100%),
+			linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%);
+		-webkit-mask-composite: source-in;
+		mask-image:
+			linear-gradient(to bottom, transparent 0%, #000 10%, #000 72%, transparent 100%),
+			linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%);
+		mask-composite: intersect;
+	}
+
+	@media (min-width: 40.0625rem) and (max-width: 68.75rem) {
+		.hero {
+			min-height: 0;
+			grid-template-columns: 1fr;
+			padding-block: 4.5rem 5.25rem;
+		}
+
+		.hero__portrait-wrap {
+			display: none;
+		}
+	}
+
+	@media (max-width: 40rem) {
+		.hero {
+			min-height: 0;
+			grid-template-columns: 1fr;
+			gap: 2rem;
+			padding-block: 3.5rem 4rem;
+		}
+
+		h1 {
+			font-size: clamp(3.25rem, 15vw, 4.5rem);
+			white-space: normal;
+		}
+
+		.hero__portrait-wrap {
+			width: min(100%, 21.25rem);
+			justify-self: center;
+		}
+	}
+</style>

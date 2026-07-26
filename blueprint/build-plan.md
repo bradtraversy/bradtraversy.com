@@ -9,7 +9,7 @@
 - [x] 1. **Visual foundation and site shell** - establish the approved design
   tokens, typography, responsive layout, shared metadata, header, mobile
   navigation, footer, and reusable primitives
-- [ ] 2. **Portfolio homepage** - build the approved homepage flow for identity,
+- [x] 2. **Portfolio homepage** - build the approved homepage flow for identity,
   credibility, education platforms, selected projects, featured writing, about,
   social links, contact, and the bradtraversy.dev devlog path
 - [ ] 3. **Project collection and index** - define validated project content,

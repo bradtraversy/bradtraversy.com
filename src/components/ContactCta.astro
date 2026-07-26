@@ -1,0 +1,62 @@
+<section class="contact" aria-labelledby="contact-title">
+	<div class="contact__inner shell">
+		<h2 id="contact-title">Have a project, partnership, or idea worth building?</h2>
+		<a
+			class="contact__link"
+			href="https://www.linkedin.com/in/bradtraversy"
+			target="_blank"
+			rel="noreferrer"
+		>
+			Let's talk <span aria-hidden="true">→</span>
+		</a>
+	</div>
+</section>
+
+<style>
+	.contact {
+		background: var(--color-gold);
+		color: var(--color-black);
+	}
+
+	.contact__inner {
+		display: grid;
+		grid-template-columns: 1.4fr 0.6fr;
+		align-items: end;
+		gap: 5rem;
+		padding-block: 5.625rem;
+	}
+
+	h2 {
+		max-width: 56.25rem;
+		margin: 0;
+		font-size: clamp(2.875rem, 6.5vw, 5.75rem);
+		font-weight: 600;
+		letter-spacing: -0.06em;
+		line-height: 0.98;
+	}
+
+	.contact__link {
+		justify-self: end;
+		padding-bottom: 0.5625rem;
+		border-bottom: 2px solid var(--color-black);
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	@media (max-width: 56.25rem) {
+		.contact__inner {
+			grid-template-columns: 1fr;
+			gap: 2.5rem;
+		}
+
+		.contact__link {
+			justify-self: start;
+		}
+	}
+
+	@media (max-width: 40rem) {
+		.contact__inner {
+			padding-block: 4.5rem;
+		}
+	}
+</style>

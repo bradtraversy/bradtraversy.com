@@ -1,0 +1,80 @@
+---
+import { SITE_CONFIG } from "../data/site";
+---
+
+<section class="proof" aria-label="Highlights">
+	<div class="proof__grid shell">
+		{
+			SITE_CONFIG.credibilityFacts.map((fact) => (
+				<div class="proof__item">
+					<strong>{fact.value}</strong>
+					<span>
+						{fact.description}
+						{fact.url && (
+							<>
+								{" at "}
+								<a href={fact.url} target="_blank" rel="noreferrer">
+									bradtraversy.dev
+								</a>
+							</>
+						)}
+					</span>
+				</div>
+			))
+		}
+	</div>
+</section>
+
+<style>
+	.proof {
+		border-block: 1px solid var(--color-line);
+	}
+
+	.proof__grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.proof__item {
+		padding-block: 2rem;
+	}
+
+	.proof__item + .proof__item {
+		padding-left: 2.625rem;
+		border-left: 1px solid var(--color-line);
+	}
+
+	strong {
+		display: block;
+		margin-bottom: 0.1875rem;
+		font-size: 1.125rem;
+		font-weight: 600;
+	}
+
+	span {
+		color: var(--color-muted);
+		font-size: 0.8125rem;
+	}
+
+	a {
+		color: var(--color-gold);
+		text-underline-offset: 0.1875rem;
+		transition: color 180ms ease;
+	}
+
+	a:hover {
+		color: var(--color-gold-soft);
+	}
+
+	@media (max-width: 40rem) {
+		.proof__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.proof__item + .proof__item {
+			padding-left: 0;
+			border-top: 1px solid var(--color-line);
+			border-left: 0;
+		}
+	}
+</style>
