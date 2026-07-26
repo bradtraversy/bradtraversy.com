@@ -1,14 +1,5 @@
 import type { SocialIconName } from "./site";
 
-export interface HomepageArticle {
-	title: string;
-	topic: string;
-	dateLabel: string;
-	summary?: string;
-	url: string;
-	featured: boolean;
-}
-
 export interface ConnectionLink {
 	name: string;
 	handle: string;
@@ -16,32 +7,6 @@ export interface ConnectionLink {
 	url: string;
 	icon: SocialIconName;
 }
-
-export const HOMEPAGE_ARTICLES: HomepageArticle[] = [
-	{
-		title: "Client-rendered apps and SEO",
-		topic: "React and architecture",
-		dateLabel: "June 29, 2026",
-		summary:
-			"Where a client-rendered React app stops being good enough, where static HTML starts to matter, and what building Vidpipe taught me about the line between them.",
-		url: "https://bradtraversy.dev/articles/client-rendered-apps-and-seo",
-		featured: true,
-	},
-	{
-		title: "ApiMocker gets docs, domains, and a rocket again",
-		topic: "ApiMocker",
-		dateLabel: "July 22, 2026",
-		url: "https://bradtraversy.dev/devlog/2026-07-22-apimocker-docs-and-domains",
-		featured: false,
-	},
-	{
-		title: "Rebuilding the DevSheets admin",
-		topic: "DevSheets",
-		dateLabel: "July 22, 2026",
-		url: "https://bradtraversy.dev/devlog/2026-07-22-devsheets-admin-rebuild",
-		featured: false,
-	},
-];
 
 export const CONNECTION_LINKS: ConnectionLink[] = [
 	{

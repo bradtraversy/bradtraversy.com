@@ -1,0 +1,93 @@
+<aside class="writing-workbench shell" aria-labelledby="writing-workbench-title">
+	<div>
+		<p class="writing-workbench__kicker">From the workbench</p>
+		<h2 id="writing-workbench-title">Want the raw build notes?</h2>
+		<p>
+			The essays are the polished ideas. The devlog is where I document what shipped,
+			what broke, what changed, and why.
+		</p>
+	</div>
+
+	<a
+		class="writing-workbench__link"
+		href="https://bradtraversy.dev/devlog"
+		target="_blank"
+		rel="noreferrer"
+	>
+		Browse the devlog <span aria-hidden="true">↗</span>
+	</a>
+</aside>
+
+<style>
+	.writing-workbench {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: center;
+		gap: 4rem;
+		padding-block: 5.125rem;
+		border-top: 1px solid var(--color-line);
+	}
+
+	.writing-workbench__kicker {
+		margin: 0 0 1.5rem;
+		color: var(--color-gold);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	h2 {
+		max-width: 49.375rem;
+		margin: 0 0 1.125rem;
+		font-size: clamp(2.625rem, 5.2vw, 4.375rem);
+		font-weight: 500;
+		letter-spacing: -0.055em;
+		line-height: 1;
+	}
+
+	p:not(.writing-workbench__kicker) {
+		max-width: 41.875rem;
+		margin: 0;
+		color: var(--color-muted);
+	}
+
+	.writing-workbench__link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.625rem;
+		padding: 0.875rem 1.25rem;
+		border: 1px solid var(--color-line);
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-decoration: none;
+		transition: border-color 180ms ease;
+	}
+
+	.writing-workbench__link span {
+		color: var(--color-gold);
+		transition: transform 180ms ease;
+	}
+
+	.writing-workbench__link:hover,
+	.writing-workbench__link:focus-visible {
+		border-color: var(--color-gold);
+	}
+
+	.writing-workbench__link:hover span,
+	.writing-workbench__link:focus-visible span {
+		transform: translate(0.125rem, -0.125rem);
+	}
+
+	@media (max-width: 47.5rem) {
+		.writing-workbench {
+			grid-template-columns: 1fr;
+			gap: 2.125rem;
+			padding-block: 4.625rem;
+		}
+
+		.writing-workbench__link {
+			justify-self: start;
+		}
+	}
+</style>

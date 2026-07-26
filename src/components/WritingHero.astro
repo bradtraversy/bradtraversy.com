@@ -1,0 +1,129 @@
+---
+import type { WritingTopic } from "../lib/writing";
+
+interface Props {
+	topics: WritingTopic[];
+}
+
+const { topics } = Astro.props;
+---
+
+<section class="writing-hero shell" aria-labelledby="writing-page-title">
+	<div>
+		<p class="writing-hero__eyebrow">Writing by Brad Traversy</p>
+		<h1 id="writing-page-title">Thoughts from <em>the work.</em></h1>
+	</div>
+
+	<p class="writing-hero__intro">
+		Practical essays on development, building products, teaching, AI, and the
+		systems I use to make all of it work.
+	</p>
+</section>
+
+<nav class="writing-topics shell" aria-label="Writing subjects">
+	<a class="writing-topics__all" href="#all-writing">All writing</a>
+	{topics.map((topic) => <a href={"#" + topic.id}>{topic.label}</a>)}
+</nav>
+
+<style>
+	.writing-hero {
+		display: grid;
+		grid-template-columns: minmax(0, 1.25fr) minmax(21.25rem, 0.55fr);
+		align-items: end;
+		gap: 5rem;
+		padding-block: 6rem 4.875rem;
+	}
+
+	.writing-hero__eyebrow {
+		margin: 0 0 1.5rem;
+		color: var(--color-gold);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	h1 {
+		max-width: 58.125rem;
+		margin: 0;
+		font-size: clamp(4.125rem, 8.2vw, 7.375rem);
+		font-weight: 500;
+		letter-spacing: -0.066em;
+		line-height: 0.94;
+	}
+
+	h1 em {
+		color: var(--color-gold-soft);
+		font-style: normal;
+		font-weight: inherit;
+	}
+
+	.writing-hero__intro {
+		max-width: 31.25rem;
+		margin: 0 0 0.5rem;
+		color: var(--color-muted);
+		font-size: 1.125rem;
+		line-height: 1.68;
+	}
+
+	.writing-topics {
+		display: flex;
+		align-items: center;
+		gap: 2.125rem;
+		overflow-x: auto;
+		padding-block: 1.125rem;
+		border-top: 1px solid var(--color-line);
+		border-bottom: 1px solid var(--color-line);
+		scrollbar-width: none;
+	}
+
+	.writing-topics::-webkit-scrollbar {
+		display: none;
+	}
+
+	.writing-topics a {
+		flex: none;
+		color: var(--color-muted);
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-decoration: none;
+		text-transform: uppercase;
+		transition: color 180ms ease;
+	}
+
+	.writing-topics__all,
+	.writing-topics a:hover,
+	.writing-topics a:focus-visible {
+		color: var(--color-gold-soft);
+	}
+
+	@media (max-width: 65.625rem) {
+		.writing-hero {
+			grid-template-columns: 1fr;
+			gap: 2.375rem;
+		}
+
+		.writing-hero__intro {
+			max-width: 42.5rem;
+		}
+	}
+
+	@media (max-width: 47.5rem) {
+		.writing-hero {
+			padding-block: 3.875rem 3.25rem;
+		}
+
+		h1 {
+			font-size: clamp(3.5rem, 17vw, 5.125rem);
+		}
+
+		.writing-hero__intro {
+			font-size: 1rem;
+		}
+
+		.writing-topics {
+			gap: 1.5rem;
+		}
+	}
+</style>

@@ -17,7 +17,7 @@
 - [x] 4. **Project detail pages** - generate project case-study routes with
   narrative sections, role and stack facts, capabilities, media galleries,
   product links, and related build notes
-- [ ] 5. **Writing collection and index** - define internal and external writing
+- [x] 5. **Writing collection and index** - define internal and external writing
   entries and build the clean thumbnail-left, article-info-right listing with
   responsive stacking
 - [ ] 6. **Article pages** - render internal MDX essays with article metadata,

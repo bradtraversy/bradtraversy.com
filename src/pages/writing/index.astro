@@ -1,0 +1,21 @@
+---
+import WritingHero from "../../components/WritingHero.astro";
+import WritingList from "../../components/WritingList.astro";
+import WritingWorkbenchCta from "../../components/WritingWorkbenchCta.astro";
+import { SITE_CONFIG } from "../../data/site";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getWritingCatalog } from "../../lib/writing";
+
+const title = `Writing | ${SITE_CONFIG.name}`;
+const description =
+	"Essays from Brad Traversy on development, building products, teaching, AI, and the systems behind the work.";
+const { entries, topics } = await getWritingCatalog();
+---
+
+<BaseLayout title={title} description={description}>
+	<main>
+		<WritingHero topics={topics} />
+		<WritingList entries={entries} topics={topics} />
+		<WritingWorkbenchCta />
+	</main>
+</BaseLayout>

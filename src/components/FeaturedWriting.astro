@@ -1,25 +1,26 @@
 ---
-import { HOMEPAGE_ARTICLES } from "../data/home";
+import {
+	formatWritingDate,
+	getWritingCatalog,
+	getWritingDestination,
+} from "../lib/writing";
 
-const featuredArticle = HOMEPAGE_ARTICLES.find((article) => article.featured);
-const supportingArticles = HOMEPAGE_ARTICLES.filter((article) => !article.featured);
-
-if (!featuredArticle) {
-	throw new Error("The homepage requires one featured article.");
-}
+const { featured, supporting } = await getWritingCatalog();
+const featuredDestination = getWritingDestination(featured);
+const supportingArticles = supporting.slice(0, 2);
 ---
 
 <section class="writing section" id="writing" aria-labelledby="writing-title">
 	<div class="writing__grid shell">
 		<article class="writing__featured">
 			<p class="writing__meta">Featured writing</p>
-			<h2 id="writing-title">{featuredArticle.title}</h2>
-			{featuredArticle.summary && <p>{featuredArticle.summary}</p>}
+			<h2 id="writing-title">{featured.data.title}</h2>
+			<p>{featured.data.description}</p>
 			<a
 				class="writing__text-link"
-				href={featuredArticle.url}
-				target="_blank"
-				rel="noreferrer"
+				href={featuredDestination.href}
+				target={featuredDestination.external ? "_blank" : undefined}
+				rel={featuredDestination.external ? "noreferrer" : undefined}
 			>
 				Read the article <span aria-hidden="true">→</span>
 			</a>
@@ -27,23 +28,27 @@ if (!featuredArticle) {
 
 		<div class="writing__list" aria-label="More recent writing">
 			{
-				supportingArticles.map((article) => (
-					<a
-						class="writing__row"
-						href={article.url}
-						target="_blank"
-						rel="noreferrer"
-						aria-label={`Read ${article.title}`}
-					>
-						<div>
-							<h3>{article.title}</h3>
-							<span>
-								{article.topic} · {article.dateLabel}
-							</span>
-						</div>
-						<span class="writing__arrow" aria-hidden="true">→</span>
-					</a>
-				))
+				supportingArticles.map((article) => {
+					const destination = getWritingDestination(article);
+
+					return (
+						<a
+							class="writing__row"
+							href={destination.href}
+							target={destination.external ? "_blank" : undefined}
+							rel={destination.external ? "noreferrer" : undefined}
+							aria-label={`Read ${article.data.title}`}
+						>
+							<div>
+								<h3>{article.data.title}</h3>
+								<span>
+									{article.data.topic} · {formatWritingDate(article.data.publishDate)}
+								</span>
+							</div>
+							<span class="writing__arrow" aria-hidden="true">→</span>
+						</a>
+					);
+				})
 			}
 		</div>
 	</div>

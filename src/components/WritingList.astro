@@ -1,0 +1,193 @@
+---
+import { Image } from "astro:assets";
+import {
+	formatWritingDate,
+	getWritingDestination,
+	type WritingEntry,
+	type WritingTopic,
+} from "../lib/writing";
+
+interface Props {
+	entries: WritingEntry[];
+	topics: WritingTopic[];
+}
+
+const { entries, topics } = Astro.props;
+const topicIds = new Map(topics.map((topic) => [topic.label, topic.id]));
+const anchoredTopics = new Set<string>();
+---
+
+<section class="writing-list shell" id="all-writing" aria-label="Recent writing">
+	{
+		entries.map((entry) => {
+			const destination = getWritingDestination(entry);
+			const topicId = topicIds.get(entry.data.topic);
+			const rowId = topicId && !anchoredTopics.has(topicId) ? topicId : undefined;
+
+			if (topicId) {
+				anchoredTopics.add(topicId);
+			}
+
+			return (
+				<article class="writing-list__row" id={rowId}>
+					<a
+						class="writing-list__media"
+						href={destination.href}
+						target={destination.external ? "_blank" : undefined}
+						rel={destination.external ? "noreferrer" : undefined}
+						aria-label={"Read " + entry.data.title}
+					>
+						<Image
+							src={entry.data.cover.src}
+							alt={entry.data.cover.alt}
+							widths={[480, 760]}
+							sizes="(max-width: 760px) calc(100vw - 3rem), 380px"
+							loading="lazy"
+						/>
+					</a>
+
+					<div class="writing-list__content">
+						<p class="writing-list__meta">
+							<span>{entry.data.topic}</span>
+							<span aria-hidden="true">•</span>
+							<time datetime={entry.data.publishDate.toISOString()}>
+								{formatWritingDate(entry.data.publishDate)}
+							</time>
+						</p>
+						<h2>{entry.data.title}</h2>
+						<p class="writing-list__description">{entry.data.description}</p>
+						<a
+							class="writing-list__link"
+							href={destination.href}
+							target={destination.external ? "_blank" : undefined}
+							rel={destination.external ? "noreferrer" : undefined}
+						>
+							Read essay <span aria-hidden="true">→</span>
+						</a>
+					</div>
+				</article>
+			);
+		})
+	}
+</section>
+
+<style>
+	.writing-list {
+		padding-block: 3.375rem 7.25rem;
+		scroll-margin-top: 2rem;
+	}
+
+	.writing-list__row {
+		display: grid;
+		grid-template-columns: minmax(17.5rem, 23.75rem) minmax(0, 1fr);
+		gap: clamp(2.5rem, 5vw, 4rem);
+		padding-block: 2.125rem;
+		border-bottom: 1px solid var(--color-line);
+		scroll-margin-top: 2rem;
+	}
+
+	.writing-list__row:first-child {
+		border-top: 1px solid var(--color-line);
+	}
+
+	.writing-list__media {
+		align-self: start;
+		overflow: hidden;
+		aspect-ratio: 5 / 3;
+		border: 1px solid var(--color-line);
+		background: var(--color-black-soft);
+	}
+
+	.writing-list__media :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 240ms ease;
+	}
+
+	.writing-list__media:hover :global(img),
+	.writing-list__media:focus-visible :global(img) {
+		transform: scale(1.018);
+	}
+
+	.writing-list__content {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		min-width: 0;
+		padding-block: 0.125rem;
+	}
+
+	.writing-list__meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.625rem;
+		margin: 0 0 1.125rem;
+		color: var(--color-muted);
+		font-size: 0.6875rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.writing-list__meta span:first-child,
+	.writing-list__meta span[aria-hidden="true"] {
+		color: var(--color-gold-soft);
+	}
+
+	h2 {
+		margin: 0 0 0.875rem;
+		font-size: clamp(2rem, 3.5vw, 3rem);
+		font-weight: 500;
+		letter-spacing: -0.05em;
+		line-height: 1.08;
+	}
+
+	.writing-list__description {
+		max-width: 47.5rem;
+		margin: 0 0 1.75rem;
+		color: var(--color-muted);
+		line-height: 1.62;
+	}
+
+	.writing-list__link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.625rem;
+		margin-top: auto;
+		color: var(--color-bone);
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.writing-list__link span {
+		color: var(--color-gold);
+		transition: transform 180ms ease;
+	}
+
+	.writing-list__link:hover span,
+	.writing-list__link:focus-visible span {
+		transform: translateX(0.1875rem);
+	}
+
+	@media (max-width: 47.5rem) {
+		.writing-list {
+			padding-block: 2.75rem 5.5rem;
+		}
+
+		.writing-list__row {
+			grid-template-columns: 1fr;
+			gap: 1.75rem;
+			padding-block: 2.25rem;
+		}
+
+		.writing-list__media {
+			width: 100%;
+		}
+
+		h2 {
+			font-size: clamp(2rem, 9vw, 2.75rem);
+		}
+	}
+</style>
