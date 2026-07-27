@@ -1,10 +1,8 @@
 ---
 import { Image } from "astro:assets";
-import {
-	getProjectPrimaryHref,
-	hasCaseStudy,
-	type ProjectEntry,
-} from "../lib/projects";
+import { getProjectPrimaryHref, type ProjectEntry } from "../lib/projects";
+import ProjectBadges from "./ProjectBadges.astro";
+import TechnologyStack from "./TechnologyStack.astro";
 
 interface Props {
 	projects: ProjectEntry[];
@@ -20,18 +18,14 @@ const { projects } = Astro.props;
 				const { data } = project;
 				const sequence = String(index + 1).padStart(2, "0");
 				const primaryHref = getProjectPrimaryHref(project);
-				const caseStudy = hasCaseStudy(project);
 
 				return (
 					<article class="featured-project">
 						<a
 							class="featured-project__media"
 							href={primaryHref}
-							target={caseStudy ? undefined : "_blank"}
-							rel={caseStudy ? undefined : "noreferrer"}
-							aria-label={
-								caseStudy ? `View ${data.title} project` : `Visit ${data.title}`
-							}
+							data-image-fit={data.hero.fit}
+							aria-label={`View ${data.title} project`}
 						>
 							<Image
 								src={data.hero.src}
@@ -47,19 +41,20 @@ const { projects } = Astro.props;
 							</p>
 							<div class="featured-project__title-row">
 								<h2>{data.title}</h2>
-								<span class="featured-project__status">{data.status}</span>
+								<ProjectBadges project={project} />
 							</div>
 							<p class="featured-project__tagline">{data.tagline}</p>
 							<p class="featured-project__description">{data.summary}</p>
 
 							<dl class="featured-project__facts">
 								<div>
-									<dt>Role</dt>
-									<dd>{data.role}</dd>
-								</div>
-								<div>
 									<dt>Built with</dt>
-									<dd>{data.stack.join(", ")}</dd>
+									<dd>
+										<TechnologyStack
+											technologies={data.stack}
+											label={`${data.title} technology stack`}
+										/>
+									</dd>
 								</div>
 							</dl>
 
@@ -72,22 +67,29 @@ const { projects } = Astro.props;
 								>
 									Visit {data.title} <span aria-hidden="true">↗</span>
 								</a>
-								{caseStudy ? (
-									<a class="featured-project__button" href={primaryHref}>
-										View project <span aria-hidden="true">→</span>
-									</a>
-								) : (
-									data.devlogUrl && (
+								<a class="featured-project__button" href={primaryHref}>
+									View project <span aria-hidden="true">→</span>
+								</a>
+								<a
+									class="featured-project__button"
+									href={data.devlogUrl}
+									target="_blank"
+									rel="noreferrer"
+								>
+									More info <span aria-hidden="true">→</span>
+								</a>
+								{
+									data.repoUrl && (
 										<a
 											class="featured-project__button"
-											href={data.devlogUrl}
+											href={data.repoUrl}
 											target="_blank"
 											rel="noreferrer"
 										>
-											Project notes
+											{data.repoLabel ?? "Source"} <span aria-hidden="true">↗</span>
 										</a>
 									)
-								)}
+								}
 							</div>
 						</div>
 					</article>
@@ -135,6 +137,10 @@ const { projects } = Astro.props;
 		transition: transform 260ms ease;
 	}
 
+	.featured-project__media[data-image-fit="contain"] :global(img) {
+		object-fit: contain;
+	}
+
 	.featured-project__media:hover :global(img),
 	.featured-project__media:focus-visible :global(img) {
 		transform: scale(1.015);
@@ -165,17 +171,6 @@ const { projects } = Astro.props;
 		line-height: 1;
 	}
 
-	.featured-project__status {
-		flex: none;
-		padding: 0.3125rem 0.5625rem;
-		border: 1px solid rgba(229, 173, 69, 0.42);
-		color: var(--color-gold-soft);
-		font-size: 0.625rem;
-		font-weight: 700;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-	}
-
 	.featured-project__tagline {
 		margin: 0 0 1.125rem;
 		font-size: 1.1875rem;
@@ -189,7 +184,7 @@ const { projects } = Astro.props;
 
 	.featured-project__facts {
 		display: grid;
-		grid-template-columns: 0.8fr 1.2fr;
+		grid-template-columns: 1fr;
 		margin: 0 0 1.875rem;
 		border-top: 1px solid var(--color-line);
 		border-bottom: 1px solid var(--color-line);
@@ -197,11 +192,6 @@ const { projects } = Astro.props;
 
 	.featured-project__facts div {
 		padding: 1rem 0;
-	}
-
-	.featured-project__facts div + div {
-		padding-left: 1.375rem;
-		border-left: 1px solid var(--color-line);
 	}
 
 	.featured-project__facts dt {
@@ -286,14 +276,5 @@ const { projects } = Astro.props;
 			align-items: flex-start;
 		}
 
-		.featured-project__facts {
-			grid-template-columns: 1fr;
-		}
-
-		.featured-project__facts div + div {
-			padding-left: 0;
-			border-top: 1px solid var(--color-line);
-			border-left: 0;
-		}
 	}
 </style>

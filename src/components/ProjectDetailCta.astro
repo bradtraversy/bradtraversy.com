@@ -26,15 +26,23 @@ const { cta } = data.caseStudy;
 		>
 			Open {data.title} <span aria-hidden="true">↗</span>
 		</a>
+		<a
+			class="project-detail-cta__button"
+			href={data.devlogUrl}
+			target="_blank"
+			rel="noreferrer"
+		>
+			More project info <span aria-hidden="true">→</span>
+		</a>
 		{
-			data.devlogUrl && (
+			data.repoUrl && (
 				<a
 					class="project-detail-cta__button"
-					href={data.devlogUrl}
+					href={data.repoUrl}
 					target="_blank"
 					rel="noreferrer"
 				>
-					Read build notes <span aria-hidden="true">→</span>
+					{data.repoLabel ?? "View source"} <span aria-hidden="true">↗</span>
 				</a>
 			)
 		}

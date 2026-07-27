@@ -1,6 +1,7 @@
 ---
 title: Vidpipe
 status: Beta
+access: Paid
 type: Content product
 role: Creator and developer
 tagline: A publishing workflow that turns videos into reusable content.
@@ -12,8 +13,8 @@ stack:
   - Stripe
 liveUrl: https://vidpipe.ai/
 devlogUrl: https://bradtraversy.dev/projects/vidpipe
-featured: false
-order: 4
+featured: true
+order: 3
 icon: video
 hero:
   src: ../../assets/projects/vidpipe.png

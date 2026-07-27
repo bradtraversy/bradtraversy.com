@@ -20,6 +20,7 @@ const projects = defineCollection({
 		const mediaAsset = z.object({
 			src: image(),
 			alt: REQUIRED_TEXT,
+			fit: z.enum(["cover", "contain"]).optional(),
 			title: REQUIRED_TEXT.optional(),
 			caption: REQUIRED_TEXT.optional(),
 		});
@@ -32,14 +33,18 @@ const projects = defineCollection({
 
 		const projectSchema = z.object({
 			title: REQUIRED_TEXT,
-			status: REQUIRED_TEXT,
+			status: z.enum(["Live", "Beta"]),
+			access: z.enum(["Free", "Paid"]),
+			sourceModel: z.literal("Open source").optional(),
 			type: REQUIRED_TEXT,
 			role: REQUIRED_TEXT,
 			tagline: REQUIRED_TEXT,
 			summary: REQUIRED_TEXT,
 			stack: z.array(REQUIRED_TEXT).min(1),
 			liveUrl: EXTERNAL_URL,
-			devlogUrl: EXTERNAL_URL.optional(),
+			devlogUrl: EXTERNAL_URL,
+			repoUrl: EXTERNAL_URL.optional(),
+			repoLabel: REQUIRED_TEXT.optional(),
 			featured: z.boolean(),
 			order: z.number().int().positive(),
 			icon: PROJECT_ICON,

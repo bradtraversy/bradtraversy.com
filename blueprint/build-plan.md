@@ -23,9 +23,12 @@
 - [x] 6. **Article pages** - render internal MDX essays with article metadata,
   cover media, readable long-form typography, structured content, and next-entry
   navigation
-- [ ] 7. **Content accuracy and media pass** - replace prototype placeholders
-  with current verified facts, final copy, approved portraits, optimized project
-  imagery, descriptive alt text, and working external links
+- [x] 7. **Commercial writing curation and content verification** - keep only
+  commercially relevant launch articles on this site, migrate the approved
+  existing article without writing new long-form content, curate the exact
+  nine-project portfolio with stacks, public source links, `.dev` detail paths,
+  current PortDoc, SkillPass, and DevSheets media, then verify homepage and
+  project facts, descriptive alt text, and working links
 - [ ] 8. **Discovery and quality** - add canonical and social metadata, sitemap,
   RSS, robots rules, a 404 page, accessibility checks, responsive browser
   verification, and performance cleanup

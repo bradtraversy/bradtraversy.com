@@ -1,0 +1,57 @@
+---
+import TechnologyIcon from "./TechnologyIcon.astro";
+
+interface Props {
+	technologies: string[];
+	label: string;
+}
+
+const { technologies, label } = Astro.props;
+---
+
+<ul class="technology-stack" aria-label={label}>
+	{
+		technologies.map((technology) => (
+			<li>
+				<span class="technology-stack__icon">
+					<TechnologyIcon technology={technology} />
+				</span>
+				<span>{technology}</span>
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.technology-stack {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.technology-stack li {
+		display: inline-flex;
+		min-height: 2rem;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.375rem 0.625rem;
+		border: 1px solid var(--color-line);
+		background: rgba(255, 255, 255, 0.025);
+		color: var(--color-bone);
+		font-size: 0.6875rem;
+		font-weight: 600;
+		line-height: 1;
+	}
+
+	.technology-stack__icon {
+		display: grid;
+		width: 1rem;
+		height: 1rem;
+		flex: none;
+		place-items: center;
+		color: var(--color-gold-soft);
+	}
+</style>

@@ -1,6 +1,7 @@
 ---
 title: ApiMocker
 status: Live
+access: Free
 type: Developer platform
 role: Creator and developer
 tagline: A realistic fake REST API for tutorials, prototypes, tests, and API clients.
@@ -12,6 +13,7 @@ stack:
   - PostgreSQL
 liveUrl: https://apimocker.com/
 devlogUrl: https://bradtraversy.dev/projects/apimocker
+repoUrl: https://github.com/bradtraversy/apimocker
 featured: true
 order: 2
 icon: api

@@ -14,43 +14,77 @@ export interface ProjectCatalog {
 	additional: ProjectEntry[];
 }
 
-type ProjectGroupName = "featured" | "additional";
+const CURATED_PROJECT_SLUGS = [
+	"devsheets",
+	"apimocker",
+	"vidpipe",
+	"webutils",
+	"portdoc",
+	"ai-blueprint",
+	"linesmith",
+	"skillpass",
+	"namescout",
+] as const;
 
-function sortProjectGroup(
-	projects: ProjectEntry[],
-	groupName: ProjectGroupName,
-): ProjectEntry[] {
-	const seenOrders = new Set<number>();
+const HOMEPAGE_PROJECT_SLUGS = [
+	"devsheets",
+	"apimocker",
+	"portdoc",
+	"webutils",
+	"vidpipe",
+	"ai-blueprint",
+	"linesmith",
+	"skillpass",
+	"namescout",
+] as const;
 
-	for (const project of projects) {
-		if (seenOrders.has(project.data.order)) {
+export async function getProjectCatalog(): Promise<ProjectCatalog> {
+	const collection = await getCollection("projects");
+	const projectsBySlug = new Map(
+		collection.map((project) => [project.id, project]),
+	);
+	const projects = CURATED_PROJECT_SLUGS.map((slug, index) => {
+		const project = projectsBySlug.get(slug);
+
+		if (!project) {
+			throw new Error(`Missing curated project: ${slug}`);
+		}
+
+		const expectedOrder = index + 1;
+
+		if (project.data.order !== expectedOrder) {
 			throw new Error(
-				`Duplicate ${groupName} project order: ${project.data.order}`,
+				`Curated project "${slug}" must use order ${expectedOrder}.`,
 			);
 		}
 
-		seenOrders.add(project.data.order);
-	}
-
-	return [...projects].sort((a, b) => a.data.order - b.data.order);
-}
-
-export async function getProjectCatalog(): Promise<ProjectCatalog> {
-	const projects = await getCollection("projects");
-	const featured = sortProjectGroup(
-		projects.filter((project) => project.data.featured),
-		"featured",
-	);
-	const additional = sortProjectGroup(
-		projects.filter((project) => !project.data.featured),
-		"additional",
-	);
+		return project;
+	});
+	const featured = projects.filter((project) => project.data.featured);
+	const additional = projects.filter((project) => !project.data.featured);
 
 	return {
-		projects: [...featured, ...additional],
+		projects,
 		featured,
 		additional,
 	};
+}
+
+export async function getHomepageProjects(): Promise<ProjectEntry[]> {
+	const { projects } = await getProjectCatalog();
+	const projectsBySlug = new Map(
+		projects.map((project) => [project.id, project]),
+	);
+
+	return HOMEPAGE_PROJECT_SLUGS.map((slug) => {
+		const project = projectsBySlug.get(slug);
+
+		if (!project) {
+			throw new Error(`Missing homepage project: ${slug}`);
+		}
+
+		return project;
+	});
 }
 
 export function hasCaseStudy(
@@ -60,18 +94,13 @@ export function hasCaseStudy(
 }
 
 export function getProjectPrimaryHref(project: ProjectEntry): string {
-	return hasCaseStudy(project)
-		? `/projects/${project.id}`
-		: project.data.liveUrl;
+	return `/projects/${project.id}`;
 }
 
-export async function getCaseStudyProjects(): Promise<
-	CaseStudyProjectEntry[]
-> {
+export async function getProjectDetailProjects(): Promise<ProjectEntry[]> {
 	const { projects } = await getProjectCatalog();
-	const caseStudies = projects.filter(hasCaseStudy);
 
-	for (const project of caseStudies) {
+	for (const project of projects.filter(hasCaseStudy)) {
 		if (!project.body?.trim()) {
 			throw new Error(
 				`Project case study "${project.id}" requires a non-empty Markdown body.`,
@@ -91,5 +120,5 @@ export async function getCaseStudyProjects(): Promise<
 		}
 	}
 
-	return caseStudies;
+	return projects;
 }

@@ -1,14 +1,16 @@
 ---
 import { Image } from "astro:assets";
-import type { CaseStudyProjectEntry } from "../lib/projects";
+import type { ProjectEntry } from "../lib/projects";
 
 interface Props {
-	project: CaseStudyProjectEntry;
+	project: ProjectEntry;
 }
 
 const { project } = Astro.props;
 const { data } = project;
 const { caseStudy } = data;
+const description = caseStudy?.description ?? data.tagline;
+const productLabel = caseStudy?.productLabel ?? data.type;
 ---
 
 <section class="project-detail-hero shell" aria-labelledby="project-title">
@@ -19,11 +21,20 @@ const { caseStudy } = data;
 	<div class="project-detail-hero__heading">
 		<div>
 			<p class="project-detail-hero__eyebrow">Selected project / {data.status}</p>
-			<h1 id="project-title">{caseStudy.title.base}<em>{caseStudy.title.accent}</em></h1>
+			{
+				caseStudy ? (
+					<h1 id="project-title">
+						{caseStudy.title.base}
+						<em>{caseStudy.title.accent}</em>
+					</h1>
+				) : (
+					<h1 id="project-title">{data.title}</h1>
+				)
+			}
 		</div>
 
 		<div class="project-detail-hero__copy">
-			<p>{caseStudy.description}</p>
+			<p>{description}</p>
 			<div class="project-detail-hero__actions">
 				<a
 					class="project-detail-hero__button project-detail-hero__button--primary"
@@ -33,7 +44,9 @@ const { caseStudy } = data;
 				>
 					Visit {data.title} <span aria-hidden="true">↗</span>
 				</a>
-				<a class="project-detail-hero__button" href="#story">Explore the project</a>
+				<a class="project-detail-hero__button" href={caseStudy ? "#story" : "#details"}>
+					{caseStudy ? "Explore the project" : "Project details"}
+				</a>
 			</div>
 		</div>
 	</div>
@@ -43,7 +56,7 @@ const { caseStudy } = data;
 	class="project-detail-stage shell"
 	aria-label={`${data.title} product preview`}
 >
-	<div class="project-detail-stage__visual">
+	<div class="project-detail-stage__visual" data-image-fit={data.hero.fit}>
 		<Image
 			src={data.hero.src}
 			alt={data.hero.alt}
@@ -59,7 +72,7 @@ const { caseStudy } = data;
 		</div>
 		<div>
 			<dt>Product</dt>
-			<dd>{caseStudy.productLabel}</dd>
+			<dd>{productLabel}</dd>
 		</div>
 		<div>
 			<dt>Stack</dt>
@@ -208,6 +221,10 @@ const { caseStudy } = data;
 		object-position: center top;
 	}
 
+	.project-detail-stage__visual[data-image-fit="contain"] :global(img) {
+		object-fit: contain;
+	}
+
 	.project-detail-stage__meta {
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -261,7 +278,7 @@ const { caseStudy } = data;
 		}
 
 		h1 {
-			font-size: clamp(3.875rem, 19vw, 5.625rem);
+			font-size: clamp(3.5rem, 16vw, 5.625rem);
 		}
 
 		.project-detail-stage {

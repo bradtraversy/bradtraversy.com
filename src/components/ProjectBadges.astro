@@ -1,0 +1,87 @@
+---
+import type { ProjectEntry } from "../lib/projects";
+
+interface Props {
+	project: ProjectEntry;
+	align?: "start" | "end";
+}
+
+interface Badge {
+	label: string;
+	tone: "status" | "access" | "paid" | "source";
+}
+
+const { project, align = "end" } = Astro.props;
+const badges: Badge[] = [
+	{ label: project.data.status, tone: "status" },
+	{
+		label: project.data.access,
+		tone: project.data.access === "Paid" ? "paid" : "access",
+	},
+];
+
+if (project.data.sourceModel) {
+	badges.push({ label: project.data.sourceModel, tone: "source" });
+}
+---
+
+<ul
+	class="project-badges"
+	data-align={align}
+	aria-label={`${project.data.title} project details`}
+>
+	{badges.map((badge) => <li data-tone={badge.tone}>{badge.label}</li>)}
+</ul>
+
+<style>
+	.project-badges {
+		display: flex;
+		flex: none;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		gap: 0.375rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.project-badges[data-align="start"] {
+		justify-content: flex-start;
+	}
+
+	.project-badges li {
+		padding: 0.4375rem 0.6875rem;
+		border: 1px solid rgba(244, 239, 227, 0.3);
+		border-radius: 999px;
+		background: rgba(244, 239, 227, 0.06);
+		color: var(--color-bone);
+		font-size: 0.6875rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		line-height: 1;
+		text-transform: uppercase;
+	}
+
+	.project-badges li[data-tone="status"],
+	.project-badges li[data-tone="paid"] {
+		border-color: rgba(229, 173, 69, 0.55);
+		background: rgba(229, 173, 69, 0.1);
+		color: var(--color-gold-soft);
+	}
+
+	.project-badges li[data-tone="paid"] {
+		background: rgba(229, 173, 69, 0.16);
+	}
+
+	.project-badges li[data-tone="source"] {
+		border-color: rgba(244, 239, 227, 0.45);
+		background: rgba(244, 239, 227, 0.1);
+		color: var(--color-bone);
+	}
+
+	@media (max-width: 40rem) {
+		.project-badges {
+			justify-content: flex-start;
+		}
+	}
+</style>

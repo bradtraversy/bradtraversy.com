@@ -1,11 +1,9 @@
 ---
 import { Image } from "astro:assets";
-import {
-	getProjectPrimaryHref,
-	hasCaseStudy,
-	type ProjectEntry,
-} from "../lib/projects";
+import { getProjectPrimaryHref, type ProjectEntry } from "../lib/projects";
+import ProjectBadges from "./ProjectBadges.astro";
 import ProjectIcon from "./ProjectIcon.astro";
+import TechnologyStack from "./TechnologyStack.astro";
 
 interface Props {
 	projects: ProjectEntry[];
@@ -22,8 +20,8 @@ const { projects } = Astro.props;
 				<h2 id="project-catalog-title">Focused tools with <em>room to grow.</em></h2>
 			</div>
 			<p class="project-catalog__note">
-				Some are products, some are open-source workflows, and some began as a fix for a
-				very specific problem.
+				Some are products, some are focused tools, and some began as a fix for a very
+				specific problem.
 			</p>
 		</div>
 
@@ -32,18 +30,14 @@ const { projects } = Astro.props;
 				projects.map((project) => {
 					const { data } = project;
 					const primaryHref = getProjectPrimaryHref(project);
-					const caseStudy = hasCaseStudy(project);
 
 					return (
 						<article class="project-card">
 							<a
 								class="project-card__media"
 								href={primaryHref}
-								target={caseStudy ? undefined : "_blank"}
-								rel={caseStudy ? undefined : "noreferrer"}
-								aria-label={
-									caseStudy ? `View ${data.title} project` : `Visit ${data.title}`
-								}
+								data-image-fit={data.hero.fit}
+								aria-label={`View ${data.title} project`}
 							>
 								<Image
 									src={data.hero.src}
@@ -60,30 +54,33 @@ const { projects } = Astro.props;
 									</span>
 									<h3>{data.title}</h3>
 								</div>
-								<span class="project-card__status">{data.status}</span>
+								<ProjectBadges project={project} />
 							</div>
 
 							<p class="project-card__copy">{data.summary}</p>
 
-							<ul class="project-card__stack" aria-label={`${data.title} technology stack`}>
-								{data.stack.map((technology) => <li>{technology}</li>)}
-							</ul>
+							<TechnologyStack
+								technologies={data.stack}
+								label={`${data.title} technology stack`}
+							/>
 
 							<div class="project-card__links">
 								<a href={data.liveUrl} target="_blank" rel="noreferrer">
 									Visit site <span aria-hidden="true">↗</span>
 								</a>
-								{caseStudy ? (
-									<a href={primaryHref}>
-										View project <span aria-hidden="true">→</span>
-									</a>
-								) : (
-									data.devlogUrl && (
-										<a href={data.devlogUrl} target="_blank" rel="noreferrer">
-											Build notes <span aria-hidden="true">→</span>
+								<a href={primaryHref}>
+									View project <span aria-hidden="true">→</span>
+								</a>
+								<a href={data.devlogUrl} target="_blank" rel="noreferrer">
+									More info <span aria-hidden="true">→</span>
+								</a>
+								{
+									data.repoUrl && (
+										<a href={data.repoUrl} target="_blank" rel="noreferrer">
+											{data.repoLabel ?? "Source"} <span aria-hidden="true">↗</span>
 										</a>
 									)
-								)}
+								}
 							</div>
 						</article>
 					);
@@ -166,6 +163,10 @@ const { projects } = Astro.props;
 		transition: transform 260ms ease;
 	}
 
+	.project-card__media[data-image-fit="contain"] :global(img) {
+		object-fit: contain;
+	}
+
 	.project-card:hover .project-card__media :global(img),
 	.project-card:focus-within .project-card__media :global(img) {
 		transform: scale(1.018);
@@ -202,17 +203,6 @@ const { projects } = Astro.props;
 		letter-spacing: -0.045em;
 	}
 
-	.project-card__status {
-		flex: none;
-		padding: 0.3125rem 0.5625rem;
-		border: 1px solid rgba(229, 173, 69, 0.42);
-		color: var(--color-gold-soft);
-		font-size: 0.625rem;
-		font-weight: 700;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-	}
-
 	.project-card__copy {
 		max-width: 36.875rem;
 		margin: 0 0 1.25rem;
@@ -220,22 +210,8 @@ const { projects } = Astro.props;
 		font-size: 0.875rem;
 	}
 
-	.project-card__stack {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.4375rem;
-		margin: 0 0 1.5rem;
-		padding: 0;
-		list-style: none;
-	}
-
-	.project-card__stack li {
-		padding: 0.25rem 0.5rem;
-		border: 1px solid var(--color-line);
-		color: var(--color-muted);
-		font-size: 0.625rem;
-		letter-spacing: 0.05em;
-		text-transform: uppercase;
+	.project-card :global(.technology-stack) {
+		margin-bottom: 1.5rem;
 	}
 
 	.project-card__links {
@@ -276,6 +252,10 @@ const { projects } = Astro.props;
 	@media (max-width: 40rem) {
 		.project-catalog {
 			padding-block: 5.375rem;
+		}
+
+		.project-card__heading {
+			flex-direction: column;
 		}
 
 		.project-catalog__heading {

@@ -1,6 +1,7 @@
 ---
 title: DevSheets
 status: Live
+access: Free
 type: Developer resource
 role: Founder, designer, developer
 tagline: Free, validated developer cheat sheets with fast search, progress, and favorites.
@@ -16,26 +17,23 @@ featured: true
 order: 1
 icon: reference
 hero:
-  src: ../../assets/projects/devsheets.png
-  alt: DevSheets homepage with fast search, cheat sheet cards, and developer topics
+  src: ../../assets/projects/devsheets-home.png
+  alt: DevSheets homepage showing command-palette search and learned-item tracking
+  fit: contain
 gallery:
-  - src: ../../assets/projects/devsheets-git.png
-    alt: Git cheat sheet with commands organized into sections
-    title: Focused sheet view
-    caption: Git commands and workflows
-  - src: ../../assets/projects/devsheets-all.png
-    alt: All DevSheets page with a searchable grid of developer topics
-    title: Complete library
-    caption: 79 validated sheets
-  - src: ../../assets/projects/devsheets-categories.png
-    alt: DevSheets categories for languages, frameworks, tools, and systems
-    title: Topic categories
-    caption: Find the right reference faster
+  - src: ../../assets/projects/devsheets-dashboard.jpg
+    alt: Signed-in DevSheets dashboard showing 23 known items across four sheets with progress percentages
+    title: Learning dashboard
+    caption: Known-item progress across four active sheets
+  - src: ../../assets/projects/devsheets-item.jpg
+    alt: DevSheets Running Containers item page showing its Known status and Docker command reference
+    title: Known item
+    caption: A focused Docker reference with its learned status saved
 capabilities:
   - title: Item-level search
     description: Jump directly to a matching command or pattern, not just the sheet that contains it.
     icon: search
-  - title: 79 validated sheets
+  - title: 83+ validated sheets
     description: The catalog is checked against current official documentation and versioned when useful.
     icon: check
   - title: Favorites and progress

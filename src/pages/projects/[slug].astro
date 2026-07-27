@@ -4,16 +4,18 @@ import ProjectDetailBuild from "../../components/ProjectDetailBuild.astro";
 import ProjectDetailCta from "../../components/ProjectDetailCta.astro";
 import ProjectDetailGallery from "../../components/ProjectDetailGallery.astro";
 import ProjectDetailHero from "../../components/ProjectDetailHero.astro";
+import ProjectDetailOverview from "../../components/ProjectDetailOverview.astro";
 import ProjectDetailStory from "../../components/ProjectDetailStory.astro";
 import { SITE_CONFIG } from "../../data/site";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
-	getCaseStudyProjects,
-	type CaseStudyProjectEntry,
+	getProjectDetailProjects,
+	hasCaseStudy,
+	type ProjectEntry,
 } from "../../lib/projects";
 
 export async function getStaticPaths() {
-	const projects = await getCaseStudyProjects();
+	const projects = await getProjectDetailProjects();
 
 	return projects.map((project) => ({
 		params: { slug: project.id },
@@ -22,22 +24,34 @@ export async function getStaticPaths() {
 }
 
 interface Props {
-	project: CaseStudyProjectEntry;
+	project: ProjectEntry;
 }
 
 const { project } = Astro.props;
 const { Content } = await render(project);
+const caseStudyProject = hasCaseStudy(project) ? project : undefined;
 const title = `${project.data.title} | ${SITE_CONFIG.name}`;
 ---
 
-<BaseLayout title={title} description={project.data.caseStudy.description}>
+<BaseLayout
+	title={title}
+	description={project.data.caseStudy?.description ?? project.data.summary}
+>
 	<main>
 		<ProjectDetailHero project={project} />
-		<ProjectDetailStory project={project}>
-			<Content />
-		</ProjectDetailStory>
-		<ProjectDetailGallery project={project} />
-		<ProjectDetailBuild project={project} />
-		<ProjectDetailCta project={project} />
+		{
+			caseStudyProject ? (
+				<>
+					<ProjectDetailStory project={caseStudyProject}>
+						<Content />
+					</ProjectDetailStory>
+					<ProjectDetailGallery project={caseStudyProject} />
+					<ProjectDetailBuild project={caseStudyProject} />
+					<ProjectDetailCta project={caseStudyProject} />
+				</>
+			) : (
+				<ProjectDetailOverview project={project} />
+			)
+		}
 	</main>
 </BaseLayout>
